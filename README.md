@@ -4,8 +4,6 @@ OpenFOAM (2.2.2) case files for a 2D RANS simulation of the UNH-RVAT cross-flow 
 
 Note that this simulation has not been verified or validated.
 
-Thanks to Boloar from the cfd-online forums for providing a nice example case to modify. 
-
 Python scripts
 --------------
 There are some Python scripts included to perform various tasks:
@@ -20,3 +18,7 @@ Video
 -----
 A video of the vorticity contours produced by this simulation can be found here:
 http://youtu.be/AQ4EztjPEFk
+
+Acknowledgements
+----------------
+Thanks to Boloar from the cfd-online forums for providing a nice example case to modify. Also thanks to vkrastev from the cfd-online forums for additional advice.
