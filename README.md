@@ -21,4 +21,4 @@ http://youtu.be/AQ4EztjPEFk
 
 Acknowledgements
 ----------------
-Thanks to Boloar from the cfd-online forums for providing a nice example case to modify. Also thanks to vkrastev from the cfd-online forums for additional advice.
+Thanks to Boloar from the cfd-online forums for providing a nice example case on which to base this one. Also thanks to vkrastev for additional advice.
