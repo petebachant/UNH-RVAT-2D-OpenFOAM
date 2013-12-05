@@ -10,8 +10,8 @@ Python scripts
 --------------
 There are some Python scripts included to perform various tasks:
 
-  * `calcperf.py` -- calculates performance of turbine, plots torque
+  * `calcperf.py` -- calculates performance of turbine, plots torque.
   * `gendynmeshdict.py` -- generates a dynamicMeshDict to rotate the turbine. Note that by defaults the turbine
                      rotates at an angular velocity that is slightly unsteady to match experiments.
-  * `send_email.py` -- can be customized to send an email when the simulation finishes
-  * `qtprog.py` -- creates a progress bar using PyQt
+  * `send_email.py` -- can be customized to send an email when the simulation finishes.
+  * `qtprog.py` -- creates a progress bar using PyQt.
