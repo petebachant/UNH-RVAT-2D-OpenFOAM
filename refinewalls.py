@@ -8,7 +8,7 @@ import subprocess
 import numpy as np
 
 # Input parameters
-nlayers = 18
+nlayers = 16
 expansion_ratio = 1.25
 patches = ["shaft", "blades"]
 

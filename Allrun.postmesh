@@ -10,7 +10,7 @@ cp -rf 0.org 0
 
 ./gendynmeshdict.py
 
-runApplication renumberMesh -overwrite
+#runApplication renumberMesh -overwrite
 
 runApplication decomposePar
 

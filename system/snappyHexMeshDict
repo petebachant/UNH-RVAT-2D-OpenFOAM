@@ -255,7 +255,7 @@ addLayersControls
         // Wanted thickness of the layer furthest away from the wall.
         // If relativeSizes this is relative to undistorted size of cell
         // outside layer.
-        finalLayerThickness 1.7;
+        finalLayerThickness 2.0;
 
         // Wanted thickness of the layer next to the wall.
         // If relativeSizes this is relative to undistorted size of cell

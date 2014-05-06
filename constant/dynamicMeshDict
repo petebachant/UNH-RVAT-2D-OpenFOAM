@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.3.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -16,7 +16,7 @@ FoamFile
 
 dynamicFvMesh   solidBodyMotionFvMesh;
 
-motionSolverLibs ( "libfvMotionSolvers.so" );
+motionSolverLibs ("libfvMotionSolvers.so");
 
 solidBodyMotionFvMeshCoeffs
 {
@@ -26,8 +26,7 @@ solidBodyMotionFvMeshCoeffs
     rotatingMotionCoeffs
     {
 	origin		(0 0 0);
-	axis		(0 0 1);
-        omega		table
+	axis		(0 0 1);        omega		table
 	(
             (0.0 3.60626845303)
             (0.0200400801603 3.53530790259)
@@ -529,6 +528,6 @@ solidBodyMotionFvMeshCoeffs
             (9.95991983968 3.48052979557)
             (9.97995991984 3.43917811222)
             (10.0 3.41657688131)
-            );
+                );
+            }
         }
-    }
