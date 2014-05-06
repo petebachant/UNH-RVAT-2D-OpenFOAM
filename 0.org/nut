@@ -23,13 +23,13 @@ boundaryField
 {
     "blades.*"
     {
-        type            nutLowReWallFunction;
+        type            nutUSpaldingWallFunction;
         value           uniform 0;
     }
 
     "shaft.*"
     {
-        type            nutLowReWallFunction;
+        type            nutUSpaldingWallFunction;
         value           uniform 0;
     }
 
