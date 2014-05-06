@@ -17,13 +17,13 @@ FoamFile
 
 application     pimpleDyMFoam;
 
-startFrom       startTime;
+startFrom       latestTime;
 
 startTime       0;
 
 stopAt          endTime;
 
-endTime         10;
+endTime         10.0;
 
 deltaT          1e-3;
 
@@ -47,7 +47,7 @@ runTimeModifiable true;
 
 adjustTimeStep  yes;
 
-maxCo           0.9;
+maxCo           2;
 
 libs
 (
@@ -63,7 +63,7 @@ functions
         functionObjectLibs  ("libforces.so");
         outputControl       timeStep;
         outputInterval      1; // 10;
-        patches             (unh_rvat_unh_rvat);
+        patches             (blades shaft);
         pName               p;
         UName               U;
         rhoName             rhoInf;

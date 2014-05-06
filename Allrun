@@ -5,23 +5,4 @@ cd ${0%/*} || exit 1    # run from this directory
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
 ./Allrun.pre
-# ./gendynmeshdict.py
-
-runApplication decomposePar
-
-# runParallel `getApplication` 2
-runParallel `getApplication` 4
-
-runApplication reconstructPar
-
-rm -rf processor*
-
-runApplication vorticity
-runApplication R
-runApplication uprime
-
-# ./send_email.py 
-
-notify-send "OpenFOAM" "Simulation finished."
-
-# ./calcperf.py
+./Allrun.postmesh

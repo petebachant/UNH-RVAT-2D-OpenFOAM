@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.2                                 |
+|  \\    /   O peration     | Version:  2.3.0                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -15,52 +15,67 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-8
+9
 (
     inlet
     {
         type            patch;
-        nFaces          128;
-        startFace       78422;
+        nFaces          110;
+        startFace       82795;
     }
     outlet
     {
         type            patch;
-        nFaces          128;
-        startFace       78550;
+        nFaces          110;
+        startFace       82905;
     }
-    topAndBottom
+    walls
     {
         type            wall;
-        nFaces          256;
-        startFace       78678;
+        inGroups        1(wall);
+        nFaces          220;
+        startFace       83015;
     }
     front
     {
         type            empty;
         inGroups        1(empty);
-        nFaces          39433;
-        startFace       78934;
+        nFaces          41569;
+        startFace       83235;
     }
     back
     {
         type            empty;
         inGroups        1(empty);
-        nFaces          39433;
-        startFace       118367;
+        nFaces          41569;
+        startFace       124804;
     }
-    unh_rvat_unh_rvat
+    blades
     {
         type            wall;
-        nFaces          603;
-        startFace       157800;
+        inGroups        1(wall);
+        nFaces          760;
+        startFace       166373;
+    }
+    shaft
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          260;
+        startFace       167133;
     }
     AMI1
     {
         type            cyclicAMI;
-        inGroups        1(cyclicAMI);
-        nFaces          360;
-        startFace       158403;
+        inGroups        
+2
+(
+cyclicAMI
+baffleFaces
+)
+;
+        nFaces          312;
+        startFace       167393;
         matchTolerance  1e-07;
         transform       noOrdering;
         neighbourPatch  AMI2;
@@ -68,9 +83,15 @@ FoamFile
     AMI2
     {
         type            cyclicAMI;
-        inGroups        1(cyclicAMI);
-        nFaces          360;
-        startFace       158763;
+        inGroups        
+2
+(
+cyclicAMI
+baffleFaces
+)
+;
+        nFaces          312;
+        startFace       167705;
         matchTolerance  1e-07;
         transform       noOrdering;
         neighbourPatch  AMI1;

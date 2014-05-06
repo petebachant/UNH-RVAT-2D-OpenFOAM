@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.2                                 |
+|  \\    /   O peration     | Version:  2.2.0                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -32,7 +32,13 @@ boundaryField
         value           $internalField;
     }
 
-    "unh_rvat.*"
+    "blades.*"
+    {
+        type            movingWallVelocity;
+        value           uniform (0 0 0);
+    }
+
+    "shaft.*"
     {
         type            movingWallVelocity;
         value           uniform (0 0 0);
@@ -40,7 +46,7 @@ boundaryField
 
     #include "include/AMI"
 
-    topAndBottom
+    walls
     {
         type            fixedValue;
         value           uniform (1 0 0);

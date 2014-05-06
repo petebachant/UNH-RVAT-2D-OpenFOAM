@@ -53,4 +53,7 @@ runApplication mergeOrSplitBaffles -split -overwrite
 
 runApplication extrudeMesh
 
+runApplication checkMesh
+runApplication yPlusRAS
+
 notify-send "OpenFOAM" "Meshing finished."
