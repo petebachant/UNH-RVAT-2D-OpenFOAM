@@ -23,5 +23,4 @@ for n in range(1, nlayers-1):
 for ratio in s:
     for patch in patches:
         cm = "refineWallLayer -overwrite " + patch + " " + str(ratio)
-        print(cm)
-        #subprocess.call(cm, shell=True)
+        subprocess.call(cm, shell=True)
