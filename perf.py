@@ -25,7 +25,7 @@ print("Mean tsr:", meantsr)
 try:
     i = np.where(np.round(theta) == 360)[0][0]
 except IndexError:
-    i = 5
+    i = 50
 i2 = -1
 
 # Compute power coefficient

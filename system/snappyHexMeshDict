@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.3.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -250,12 +250,12 @@ addLayersControls
     // - overall thickness and finalLayerThickness
 
         // Expansion factor for layer mesh
-        expansionRatio 1.2;
+        expansionRatio 1.25;
 
         // Wanted thickness of the layer furthest away from the wall.
         // If relativeSizes this is relative to undistorted size of cell
         // outside layer.
-        finalLayerThickness 0.7;
+        finalLayerThickness 0.6;
 
         // Wanted thickness of the layer next to the wall.
         // If relativeSizes this is relative to undistorted size of cell
@@ -272,12 +272,12 @@ addLayersControls
     {
         "blades.*"
         {
-            nSurfaceLayers 14;
+            nSurfaceLayers 18;
         }
 
 	"shaft.*"
 	{
-	    nSurfaceLayers 14;
+	    nSurfaceLayers 16;
 	}
     }
 
