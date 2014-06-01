@@ -23,14 +23,14 @@ boundaryField
 {
     "blades.*"
     {
-        type            nutUSpaldingWallFunction;
-        value           uniform 0;
+        type            calculated;
+        //value           uniform 0;
     }
 
     "shaft.*"
     {
-        type            nutUSpaldingWallFunction;
-        value           uniform 0;
+        type            calculated;
+        //value           uniform 0;
     }
 
     "(inlet|outlet)"

@@ -53,6 +53,7 @@ libs
 (
     "libOpenFOAM.so"
     "libforces.so"
+    "libMyIncompressibleRASModels.so"
 );
 
 functions
