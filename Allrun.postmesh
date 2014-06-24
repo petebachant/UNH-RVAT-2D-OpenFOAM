@@ -24,6 +24,8 @@ rm -rf processor*
 vorticity
 R
 
+sample
+
 python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 
 notify-send "OpenFOAM" "Simulation finished."

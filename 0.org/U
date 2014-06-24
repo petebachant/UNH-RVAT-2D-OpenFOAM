@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.3.x                                 |
+|  \\    /   O peration     | Version:  2.2.0                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -23,7 +23,15 @@ internalField   uniform $flowVelocity;
 
 boundaryField
 {
-    #include "include/fixedInlet"
+
+    inlet
+    {
+        type		oscillatingFixedValue;
+	value		$internalField;
+        amplitude       constant 0.1;
+        frequency       constant 1.0;
+        refValue        $internalField;
+    }
 
     outlet
     {

@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.3.x                                 |
+|  \\    /   O peration     | Version:  2.2.2                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -23,7 +23,7 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         10.0;
+endTime         4.0;
 
 deltaT          1e-3;
 
@@ -53,7 +53,6 @@ libs
 (
     "libOpenFOAM.so"
     "libforces.so"
-    "libMyIncompressibleRASModels.so"
 );
 
 functions
