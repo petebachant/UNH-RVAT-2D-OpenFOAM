@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.0                                 |
+|  \\    /   O peration     | Version:  2.2.2                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -10,19 +10,25 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    object      epsilon;
+    object      omega;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include        "include/initialConditions"
-
 dimensions      [0 0 -1 0 0 0 0];
 
-internalField   uniform $turbulentOmega;
+internalField   uniform 1.414;
 
 boundaryField
 {
-    #include "include/fixedInlet"
+
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+
+    inlet
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
 
     outlet
     {
@@ -31,19 +37,11 @@ boundaryField
         value           $internalField;
     }
 
-    "blades.*"
+    turbine
     {
         type            omegaWallFunction;
         value           $internalField;
     }
-
-    "shaft.*"
-    {
-        type            omegaWallFunction;
-        value           $internalField;
-    }
-
-    #include "include/AMI"
 
     walls
     {
@@ -51,14 +49,31 @@ boundaryField
         value           $internalField;
     }
 
-    front
+    top
     {
         type            empty;
     }
 
-    back
+    bottom
     {
         type            empty;
+    }
+
+    AMI1
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
+
+    AMI2
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
+
+    "proc.*"
+    {
+        type            processor;
     }
 
 }

@@ -23,8 +23,13 @@ shaft.stl
 {
     #include "surfaceFeatureExtractDictDefaults"
 }
-
-AMIsurface_z.stl
+/*
+struts_and_hub.stl
+{
+    #include "surfaceFeatureExtractDictDefaults"
+}
+*/
+AMIsurface.stl
 {
     #include "surfaceFeatureExtractDictDefaults"
 }

@@ -17,20 +17,18 @@ FoamFile
 
 dimensions      [0 2 -1 0 0 0 0];
 
-internalField   uniform 1e-7;
+internalField   uniform 0; // Was 1e-7
 
 boundaryField
 {
-    "blades.*"
-    {
-        type            calculated;
-        //value           uniform 0;
-    }
 
-    "shaft.*"
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+
+    turbine
     {
-        type            calculated;
-        //value           uniform 0;
+        type            nutLowReWallFunction;
+        value           uniform 0;
     }
 
     "(inlet|outlet)"
@@ -39,12 +37,12 @@ boundaryField
         value           uniform 0;
     }
 
-    front
+    top
     {
         type            empty;
     }
 
-    back
+    bottom
     {
         type            empty;
     }
@@ -55,7 +53,23 @@ boundaryField
         value           uniform 0;
     }
 
-    #include "include/AMI"
+    AMI1
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
+
+    AMI2
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
+
+    "proc.*"
+    {
+        type            processor;
+    }
+
 }
 
 

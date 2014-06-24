@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.3.x                                 |
+|  \\    /   O peration     | Version:  2.2.2                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -14,15 +14,20 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include        "include/initialConditions"
-
 dimensions      [0 2 -2 0 0 0 0];
 
-internalField   uniform $turbulentKE;
+internalField   uniform 2e-4;
 
 boundaryField
 {
-    #include "include/fixedInlet"
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+
+    inlet
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
 
     outlet
     {
@@ -31,19 +36,11 @@ boundaryField
         value           $internalField;
     }
 
-    "blades.*"
+    turbine
     {
         type            fixedValue;
         value           uniform 1e-12;
     }
-
-    "shaft.*"
-    {
-        type            fixedValue;
-        value           uniform 1e-12;
-    }
-
-    #include "include/AMI"
 
     walls
     {
@@ -51,14 +48,31 @@ boundaryField
         value           $internalField;
     }
 
-    front
+    top
     {
         type            empty;
     }
 
-    back
+    bottom
     {
         type            empty;
+    }
+
+    AMI1
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
+
+    AMI2
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
+
+    "proc.*"
+    {
+        type            processor;
     }
 
 }

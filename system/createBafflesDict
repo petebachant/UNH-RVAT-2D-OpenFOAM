@@ -27,7 +27,7 @@ baffles
     {
         //- Use predefined faceZone to select faces and orientation.
         type        faceZone;
-        zoneName    AMIsurface_z;
+        zoneName    AMIsurface;
 
 
         patches
@@ -37,7 +37,7 @@ baffles
                 //- Master side patch
                 name            AMI1;
                 type            cyclicAMI;
-                matchTolerance  1e-7; // Was 1e-7
+                matchTolerance  1e-5; // Was 1e-7
                 neighbourPatch  AMI2;
                 transform       noOrdering;
             }
@@ -46,7 +46,7 @@ baffles
                 //- Slave side patch
                 name            AMI2;
                 type            cyclicAMI;
-                matchTolerance  1e-7; // Was 1e-7
+                matchTolerance  1e-5; // Was 1e-7
                 neighbourPatch  AMI1;
                 transform       noOrdering;
             }

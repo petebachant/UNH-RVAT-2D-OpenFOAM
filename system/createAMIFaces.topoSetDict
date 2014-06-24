@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.x                                 |
+|  \\    /   O peration     | Version:  2.2.0                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -18,14 +18,14 @@ FoamFile
 actions
 (
     {
-        name    AMIsurface_z;
+        name    AMIsurface;
         type    cellSet;
         action  new;
         source  cylinderToCell;
         sourceInfo
         {
-            p1      (0 0 -0.75);
-            p2      (0 0  0.75);
+            p1      (0 0 -0.75); // Was (0 0 -0.5)
+            p2      (0 0  0.75); // Was (0 0 0.5)
             radius  0.65;
         }
     }
@@ -36,7 +36,7 @@ actions
         source  cellToCell;
         sourceInfo
         {
-            set AMIsurface_z;
+            set AMIsurface;
         }
     }
     {
@@ -46,31 +46,31 @@ actions
     }
 
     {
-        name    AMIsurface_z;
+        name    AMIsurface;
         type    cellZoneSet;
         action  new;
         source  setToCellZone;
         sourceInfo
         {
-            set     AMIsurface_z;
+            set     AMIsurface;
         }
     }
 
 
 
     {
-        name    AMIsurface_zFace;
+        name    AMIsurfaceFace;
         type    faceSet;
         action  new;
         source  cellToFace;
         sourceInfo
         {
-            set     AMIsurface_z;
+            set     AMIsurface;
             option  all;
         }
     }
     {
-        name    AMIsurface_zFace;
+        name    AMIsurfaceFace;
         type    faceSet;
         action  subset;
         source  cellToFace;
@@ -81,14 +81,14 @@ actions
         }
     }
     {
-        name    AMIsurface_z;
+        name    AMIsurface;
         type    faceZoneSet;
         action  new;
         source  setsToFaceZone;
         sourceInfo
         {
-            faceSet     AMIsurface_zFace;
-            cellSet     AMIsurface_z;
+            faceSet     AMIsurfaceFace;
+            cellSet     AMIsurface;
         }
     }
 

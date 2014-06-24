@@ -5,4 +5,28 @@ cd ${0%/*} || exit 1    # run from this directory
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
 ./Allrun.pre
-./Allrun.postmesh
+
+cp -rf 0.org 0
+
+./gendynmeshdict.py
+
+runApplication decomposePar
+
+#- For parallel running
+ls -d processor* | xargs -i rm -rf ./{}/0 $1
+ls -d processor* | xargs -i cp -r 0.org ./{}/0 $1
+
+#cp system/decomposeParDict.scotch system/decomposeParDict
+runParallel `getApplication` 2
+runParallel vorticity 2
+runParallel R 2
+
+runApplication reconstructPar
+
+# rm -rf processor*
+
+python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
+
+notify-send "OpenFOAM" "Simulation finished."
+
+./perf.py

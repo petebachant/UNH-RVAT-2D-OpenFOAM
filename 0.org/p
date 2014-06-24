@@ -14,14 +14,16 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include        "include/initialConditions"
-
 dimensions      [0 2 -2 0 0 0 0];
 
-internalField   uniform $pressure;
+internalField   uniform 0;
 
 boundaryField
 {
+
+    //- Set patchGroups for constraint patches
+    #include "${WM_PROJECT_DIR}/etc/caseDicts/setConstraintTypes"
+
     inlet
     {
         type            zeroGradient;
@@ -33,12 +35,7 @@ boundaryField
         value           $internalField;
     }
 
-    "blades.*"
-    {
-        type            zeroGradient;
-    }
-
-    "shaft.*"
+    turbine
     {
         type            zeroGradient;
     }
@@ -48,19 +45,33 @@ boundaryField
         type            zeroGradient;
     }
 
-    front
+    top
     {
         type            empty;
     }
 
-    back
+    bottom
     {
         type            empty;
     }
 
-    #include "include/AMI"
+    AMI1
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
 
-//    #include "include/frontBackTopBottomPatches"
+    AMI2
+    {
+        type  		cyclicAMI;
+        value   	$internalField;
+    }
+
+    "proc.*"
+    {
+        type            processor;
+    }
+
 }
 
 // ************************************************************************* //
