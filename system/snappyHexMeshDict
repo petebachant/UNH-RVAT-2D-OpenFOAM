@@ -250,7 +250,7 @@ addLayersControls
     // - overall thickness and finalLayerThickness
 
         // Expansion factor for layer mesh
-        expansionRatio 1.25;
+        expansionRatio 1.1;
 
         // Wanted thickness of the layer furthest away from the wall.
         // If relativeSizes this is relative to undistorted size of cell
@@ -270,15 +270,15 @@ addLayersControls
     // Per final patch (so not geometry!) the layer information
     layers
     {
-        "blades.*"
+        blades
         {
-            nSurfaceLayers 18;
+            nSurfaceLayers 20;
         }
 
-	"shaft.*"
-	{
-	    nSurfaceLayers 16;
-	}
+	    shaft
+	    {
+	        nSurfaceLayers 20;
+	    }
     }
 
     // Minimum thickness of cell layer. If for any reason layer
