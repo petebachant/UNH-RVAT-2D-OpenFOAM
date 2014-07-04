@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.0                                 |
+|  \\    /   O peration     | Version:  2.3.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -21,16 +21,14 @@ internalField   uniform 1e-7;
 
 boundaryField
 {
-    "blades.*"
+    blades
     {
-        type            calculated;
-        //value           uniform 0;
+        type            nutLowReWallFunction;
     }
 
-    "shaft.*"
+    shaft
     {
-        type            calculated;
-        //value           uniform 0;
+        type            nutLowReWallFunction;
     }
 
     "(inlet|outlet)"

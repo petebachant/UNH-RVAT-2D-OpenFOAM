@@ -31,16 +31,14 @@ boundaryField
         value           $internalField;
     }
 
-    "blades.*"
+    blades
     {
-        type            fixedValue;
-        value           uniform 1e-12;
+        type            kLowReWallFunction;
     }
 
-    "shaft.*"
+    shaft
     {
-        type            fixedValue;
-        value           uniform 1e-12;
+        type            kLowReWallFunction;
     }
 
     #include "include/AMI"

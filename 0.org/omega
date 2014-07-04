@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.0                                 |
+|  \\    /   O peration     | Version:  2.3.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -31,16 +31,14 @@ boundaryField
         value           $internalField;
     }
 
-    "blades.*"
+    blades
     {
         type            omegaWallFunction;
-        value           $internalField;
     }
 
-    "shaft.*"
+    shaft
     {
         type            omegaWallFunction;
-        value           $internalField;
     }
 
     #include "include/AMI"
@@ -48,7 +46,6 @@ boundaryField
     walls
     {
         type            omegaWallFunction;
-        value           $internalField;
     }
 
     front
