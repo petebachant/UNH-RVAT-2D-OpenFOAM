@@ -34,11 +34,13 @@ boundaryField
     blades
     {
         type            omegaWallFunction;
+        value           $internalField;
     }
 
     shaft
     {
         type            omegaWallFunction;
+        value           $internalField;
     }
 
     #include "include/AMI"
@@ -46,6 +48,7 @@ boundaryField
     walls
     {
         type            omegaWallFunction;
+        value           $internalField;
     }
 
     front

@@ -24,11 +24,13 @@ boundaryField
     blades
     {
         type            nutLowReWallFunction;
+        value           uniform 0;
     }
 
     shaft
     {
         type            nutLowReWallFunction;
+        value           uniform 0;
     }
 
     "(inlet|outlet)"
