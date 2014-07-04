@@ -17,6 +17,15 @@ require [foamPy](https://github.com/petebachant/foamPy.git).
     Note that by defaults the turbine rotates at an angular velocity that is 
     slightly unsteady to match experiments.
   * `prog.py` -- creates a progress bar using PyQt.
+  
+Tagged commits
+--------------
+
+### `mesh0`
+  * 139k cells
+  * Average `yPlus` at 6 s: 2.44 at blades, 0.944 at shaft
+  * Mean `C_P` from 360 deg to 6 s: 0.51
+  * `maxCo`: 20
 
 Video
 -----
