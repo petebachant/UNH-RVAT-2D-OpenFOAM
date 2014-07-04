@@ -10,7 +10,7 @@ Note that this simulation has not been verified or validated.
 Python scripts
 --------------
 There are some Python scripts included to perform various tasks. Note that these
-require `foampy`, which is an unreleased module in progress.
+require [foamPy](https://github.com/petebachant/foamPy.git).
 
   * `perf.py` -- calculates performance of turbine, plots torque.
   * `gendynmeshdict.py` -- generates a dynamicMeshDict to rotate the turbine. 
