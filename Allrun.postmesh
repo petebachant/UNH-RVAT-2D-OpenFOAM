@@ -25,7 +25,6 @@ rm -rf processor*
 
 # runApplication pimpleDyMFoam
 vorticity
-R
 
 python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 
