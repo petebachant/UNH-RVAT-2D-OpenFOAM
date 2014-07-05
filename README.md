@@ -26,6 +26,8 @@ Tagged commits
   * Average `yPlus` at 6 s: 2.44 at blades, 0.944 at shaft
   * Mean `C_P` from 360 deg to 6 s: 0.51
   * `maxCo`: 20
+  * On `kOmegaSSTLowRe` branch, mean `C_P` is 0.51. `yPlus` values are close
+    as well.
 
 Video
 -----
