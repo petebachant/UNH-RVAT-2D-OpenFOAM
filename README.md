@@ -26,6 +26,13 @@ Tagged commits
   * Average `yPlus` at 6 s: 2.44 at blades, 0.944 at shaft
   * Mean `C_P` from 360 deg to 6 s: 0.51
   * `maxCo`: 20
+  
+### `mesh1`
+  * 450k cells
+  * Average `yPlus` at 6 s: 1.2 at blades
+  * `maxCo` = 40
+  * `deltaT` ~ 0.002
+  * Mean `C_P` from 360 deg to 6 s: 0.54
 
 Video
 -----
