@@ -23,9 +23,7 @@ runApplication reconstructPar
 
 rm -rf processor*
 
-# runApplication pimpleDyMFoam
-vorticity
-R
+runApplication vorticity
 
 python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 
