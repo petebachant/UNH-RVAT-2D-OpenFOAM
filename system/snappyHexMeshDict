@@ -132,17 +132,18 @@ castellatedMeshControls
         AMISurface
         {
             level       (0 0);
+            faceType    boundary;
             cellZone    AMISurface;
             faceZone    AMISurface;
             cellZoneInside  inside;
         }
         blades
         {
-            level       (6 6);
+            level       (5 5);
         }
         shaft
         {
-            level       (6 6);
+            level       (5 5);
         }
     }
 
