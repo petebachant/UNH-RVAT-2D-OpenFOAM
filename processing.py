@@ -51,6 +51,32 @@ def calc_perf(plot=False):
             "C_D" : meancd, 
             "TSR" : meantsr}
             
+def get_ncells(logname="log.checkMesh", keyword="cells"):
+    if keyword == "cells":
+        keyword = "cells:"
+    with open(logname) as f:
+        for line in f.readlines():
+            ls = line.split()
+            if ls and ls[0] == keyword:
+                value = ls[1]
+                return int(value)
+                
+def get_yplus(logname="log.yPlus"):
+    with open(logname) as f:
+        lines = f.readlines()
+        for n in range(len(lines)):
+            ls = lines[n].split()
+            if ls and ls[-1] == "blades":
+                nstart = n
+                break
+    line = lines[n+3]
+    line = line.split()
+    return {"min" : float(line[3]),
+            "max" : float(line[5]),
+            "mean" : float(line[7])}
+            
 if __name__ == "__main__":
-    calc_perf(plot=True)
+#    calc_perf(plot=True)
+    print(get_ncells("checkMesh-log"))
+    print(get_yplus("yPlus-log"))
     

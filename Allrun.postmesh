@@ -22,6 +22,8 @@ runApplication reconstructPar
 rm -rf processor*
 
 runApplication vorticity
+mv log.yPlus log.yPlus.0
+runApplication yPlus -latestTime
 
 python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 

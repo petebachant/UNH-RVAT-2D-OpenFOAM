@@ -38,24 +38,28 @@ def set_blockmesh_resolution(nx):
                                       "vertices", vertices)
 
 def spatial_grid_dep():
-    grids = [50, 80, 110, 140, 180, 220]
-    cp = []
-    cd = []
-    tsr = []
+    if not os.path.isdir("processed"):
+        os.mkdir("processed")
+    with open("processed/spatial_grid_dep.csv", "w") as f:
+        f.write("nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean\n") 
+    grids = [40, 50]
     for grid in grids:
         set_blockmesh_resolution(grid)
         call("./Allrun")
         data = processing.calc_perf()
-        cp.append(data["C_P"])
-        cd.append(data["C_D"])
-        tsr.append(data["TSR"])
+        ncells = processing.get_ncells()
+        yplus = processing.get_yplus()
+        with open("processed/spatial_grid_dep.csv", "a") as f:
+            f.write("{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean}\n"\
+                    .format(nx=grid,
+                            ncells=ncells,
+                            tsr=data["TSR"],
+                            cp=data["C_P"],
+                            cd=data["C_D"],
+                            ypmin=yplus["min"],
+                            ypmax=yplus["max"],
+                            ypmean=yplus["mean"])) 
         call("./Allclean")
-    if not os.path.isdir("processed"):
-        os.mkdir("processed")
-    pd.DataFrame({"nx" : grids, 
-                  "C_P" : cp, 
-                  "C_D" : cd,
-                  "TSR" : tsr}).to_csv("processed/spatial_grid_dep.csv")
       
 def main():
     spatial_grid_dep()
