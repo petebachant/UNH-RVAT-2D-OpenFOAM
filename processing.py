@@ -9,49 +9,13 @@ import matplotlib.pyplot as plt
 import numpy as np 
 import foampy
 import sys
+import os
 
 area = 0.05
 R = 0.5
 U_infty = 1.0
 rho = 1000.0
 
-def calc_perf(plot=False):
-    t, torque, drag = foampy.load_all_torque_drag()
-    _t, theta, omega = foampy.load_theta_omega(t_interp=t)
-    # Compute tip speed ratio
-    tsr = omega*R/U_infty
-    # Pick an index to start from for mean calculations and plotting
-    # (allow turbine to reach steady state)
-    try:
-        i = np.where(np.round(theta) == 361)[0][0]
-    except IndexError:
-        i = 5
-    i2 = -1
-    # Compute mean TSR
-    meantsr = np.mean(tsr[i:i2])
-    print("Mean TSR =", meantsr)
-    # Compute power coefficient
-    area = 0.05
-    power = torque*omega
-    cp = power/(0.5*rho*area*U_infty**3)
-    meancp = np.mean(cp[i:i2])
-    print("Mean C_P =", meancp)
-    # Compute drag coefficient
-    cd = drag/(0.5*rho*area*U_infty**2)
-    meancd = np.mean(cd[i:i2])
-    print("Mean C_D =", meancd)
-    if plot:
-        plt.close('all')
-        plt.plot(theta[i:i2], cp[i:i2])
-        plt.title(r"$\lambda = %1.1f$" %meantsr)
-        plt.xlabel(r"$\theta$ (degrees)")
-        plt.ylabel(r"$C_P$")
-        #plt.ylim((0, 1.0))
-        plt.show()
-    return {"C_P" : meancp, 
-            "C_D" : meancd, 
-            "TSR" : meantsr}
-            
 def get_ncells(logname="log.checkMesh", keyword="cells"):
     if keyword == "cells":
         keyword = "cells:"
@@ -75,7 +39,65 @@ def get_yplus(logname="log.yPlus"):
     return {"min" : float(line[3]),
             "max" : float(line[5]),
             "mean" : float(line[7])}
+
+def calc_perf(plot=False, verbose=True):
+    t, torque, drag = foampy.load_all_torque_drag()
+    _t, theta, omega = foampy.load_theta_omega(t_interp=t)
+    # Compute tip speed ratio
+    tsr = omega*R/U_infty
+    # Pick an index to start from for mean calculations and plotting
+    # (allow turbine to reach steady state)
+    try:
+        i = np.where(np.round(theta) == 361)[0][0]
+    except IndexError:
+        i = 5
+    i2 = -1
+    # Compute mean TSR
+    meantsr = np.mean(tsr[i:i2])
+    # Compute power coefficient
+    power = torque*omega
+    cp = power/(0.5*rho*area*U_infty**3)
+    meancp = np.mean(cp[i:i2])
+    # Compute drag coefficient
+    cd = drag/(0.5*rho*area*U_infty**2)
+    meancd = np.mean(cd[i:i2])
+    if verbose:
+        print("Mean TSR =", meantsr)
+        print("Mean C_P =", meancp)
+        print("Mean C_D =", meancd)
+    if plot:
+        plt.close('all')
+        plt.plot(theta[i:i2], cp[i:i2])
+        plt.title(r"$\lambda = %1.1f$" %meantsr)
+        plt.xlabel(r"$\theta$ (degrees)")
+        plt.ylabel(r"$C_P$")
+        #plt.ylim((0, 1.0))
+        plt.show()
+    return {"C_P" : meancp, 
+            "C_D" : meancd, 
+            "TSR" : meantsr}
             
+def log_perf(logname="perf_all.csv", mode="a", verbose=True):
+    """Logs mean performance calculations to CSV file. If file exists, data
+    is appended."""
+    if not os.path.isdir("processed"):
+        os.mkdir("processed")
+    with open("processed/" + logname, mode) as f:
+        if os.stat("processed/" + logname).st_size == 0:
+            f.write("nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean\n")
+        data = calc_perf(verbose=verbose)
+        ncells = get_ncells()
+        yplus = get_yplus()
+        f.write("{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean}\n"\
+                .format(nx=grid,
+                        ncells=ncells,
+                        tsr=data["TSR"],
+                        cp=data["C_P"],
+                        cd=data["C_D"],
+                        ypmin=yplus["min"],
+                        ypmax=yplus["max"],
+                        ypmean=yplus["mean"])) 
+
 if __name__ == "__main__":
     calc_perf(plot=False)
     

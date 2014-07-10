@@ -38,27 +38,11 @@ def set_blockmesh_resolution(nx):
                                       "vertices", vertices)
 
 def spatial_grid_dep():
-    if not os.path.isdir("processed"):
-        os.mkdir("processed")
-    with open("processed/spatial_grid_dep.csv", "w") as f:
-        f.write("nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean\n") 
     grids = [40, 50]
     for grid in grids:
         set_blockmesh_resolution(grid)
         call("./Allrun")
-        data = processing.calc_perf()
-        ncells = processing.get_ncells()
-        yplus = processing.get_yplus()
-        with open("processed/spatial_grid_dep.csv", "a") as f:
-            f.write("{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean}\n"\
-                    .format(nx=grid,
-                            ncells=ncells,
-                            tsr=data["TSR"],
-                            cp=data["C_P"],
-                            cd=data["C_D"],
-                            ypmin=yplus["min"],
-                            ypmax=yplus["max"],
-                            ypmean=yplus["mean"])) 
+        processing.log_perf("spatial_grid_dep.csv")
         call("./Allclean")
       
 def main():
