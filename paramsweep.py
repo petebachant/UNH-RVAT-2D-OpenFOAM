@@ -38,11 +38,11 @@ def set_blockmesh_resolution(nx):
                                       "vertices", vertices)
 
 def spatial_grid_dep():
-    grids = [40, 50]
-    for grid in grids:
-        set_blockmesh_resolution(grid)
+    nx_list = [55, ]
+    for nx in nx_list:
+        set_blockmesh_resolution(nx)
         call("./Allrun")
-        processing.log_perf("spatial_grid_dep.csv")
+        processing.log_perf("spatial_grid_dep.csv", verbose=False)
         call("./Allclean")
       
 def main():

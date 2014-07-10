@@ -39,6 +39,12 @@ def get_yplus(logname="log.yPlus"):
     return {"min" : float(line[3]),
             "max" : float(line[5]),
             "mean" : float(line[7])}
+            
+def get_nx():
+    blocks = foampy.dictionaries.read_text("constant/polyMesh/blockMeshDict", 
+                                           "blocks")
+    nx = int(blocks[3].replace("(", "").split()[0])
+    return nx
 
 def calc_perf(plot=False, verbose=True):
     t, torque, drag = foampy.load_all_torque_drag()
@@ -77,7 +83,7 @@ def calc_perf(plot=False, verbose=True):
             "C_D" : meancd, 
             "TSR" : meantsr}
             
-def log_perf(logname="perf_all.csv", mode="a", verbose=True):
+def log_perf(logname="all_perf.csv", mode="a", verbose=True):
     """Logs mean performance calculations to CSV file. If file exists, data
     is appended."""
     if not os.path.isdir("processed"):
@@ -88,8 +94,9 @@ def log_perf(logname="perf_all.csv", mode="a", verbose=True):
         data = calc_perf(verbose=verbose)
         ncells = get_ncells()
         yplus = get_yplus()
+        nx = get_nx()
         f.write("{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean}\n"\
-                .format(nx=grid,
+                .format(nx=nx,
                         ncells=ncells,
                         tsr=data["TSR"],
                         cp=data["C_P"],
@@ -99,5 +106,6 @@ def log_perf(logname="perf_all.csv", mode="a", verbose=True):
                         ypmean=yplus["mean"])) 
 
 if __name__ == "__main__":
+    get_nx()
     calc_perf(plot=False)
     

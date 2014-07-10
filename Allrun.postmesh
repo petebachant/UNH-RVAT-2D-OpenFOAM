@@ -25,7 +25,7 @@ runApplication vorticity
 mv log.yPlus log.yPlus.0
 runApplication yPlus -latestTime
 
-python -c "import processing; processing.calc_perf()"
+python -c "import processing; processing.log_perf()"
 
 python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 
