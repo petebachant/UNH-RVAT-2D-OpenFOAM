@@ -45,6 +45,14 @@ def get_nx():
                                            "blocks")
     nx = int(blocks[3].replace("(", "").split()[0])
     return nx
+    
+def get_max_courant_no():
+    with open("system/controlDict") as f:
+        for line in f.readlines():
+            if ";" in line:
+                ls = line.replace(";", " ").split()
+                if ls[0] == "maxCo":
+                    return float(ls[1])
 
 def calc_perf(plot=False, verbose=True):
     t, torque, drag = foampy.load_all_torque_drag()
@@ -90,13 +98,15 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
         os.mkdir("processed")
     with open("processed/" + logname, mode) as f:
         if os.stat("processed/" + logname).st_size == 0:
-            f.write("nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean\n")
+            f.write("maxco,nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean\n")
         data = calc_perf(verbose=verbose)
         ncells = get_ncells()
         yplus = get_yplus()
         nx = get_nx()
-        f.write("{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean}\n"\
-                .format(nx=nx,
+        maxco = get_max_courant_no()
+        f.write("{maxco},{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean}\n"\
+                .format(maxco=maxco,
+                        nx=nx,
                         ncells=ncells,
                         tsr=data["TSR"],
                         cp=data["C_P"],
@@ -106,6 +116,6 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ypmean=yplus["mean"])) 
 
 if __name__ == "__main__":
-    get_nx()
+    print(get_max_courant_no())
     calc_perf(plot=False)
     
