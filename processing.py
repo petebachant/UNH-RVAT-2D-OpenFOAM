@@ -17,11 +17,9 @@ rho = 1000.0
 
 def calc_perf(plot=False):
     t, torque, drag = foampy.load_all_torque_drag()
-    _t, theta, omega = foampy.load_theta_omega(t_interp=t) 
+    _t, theta, omega = foampy.load_theta_omega(t_interp=t)
     # Compute tip speed ratio
     tsr = omega*R/U_infty
-    meantsr = np.mean(tsr)
-    print("Mean tsr:", meantsr)
     # Pick an index to start from for mean calculations and plotting
     # (allow turbine to reach steady state)
     try:
@@ -29,16 +27,19 @@ def calc_perf(plot=False):
     except IndexError:
         i = 5
     i2 = -1
+    # Compute mean TSR
+    meantsr = np.mean(tsr[i:i2])
+    print("Mean TSR =", meantsr)
     # Compute power coefficient
     area = 0.05
     power = torque*omega
     cp = power/(0.5*rho*area*U_infty**3)
     meancp = np.mean(cp[i:i2])
-    print("Mean cp:", meancp)
+    print("Mean C_P =", meancp)
     # Compute drag coefficient
     cd = drag/(0.5*rho*area*U_infty**2)
     meancd = np.mean(cd[i:i2])
-    print("Mean cd:", meancd)
+    print("Mean C_D =", meancd)
     if plot:
         plt.close('all')
         plt.plot(theta[i:i2], cp[i:i2])
@@ -76,7 +77,5 @@ def get_yplus(logname="log.yPlus"):
             "mean" : float(line[7])}
             
 if __name__ == "__main__":
-#    calc_perf(plot=True)
-    print(get_ncells("checkMesh-log"))
-    print(get_yplus("yPlus-log"))
+    calc_perf(plot=False)
     
