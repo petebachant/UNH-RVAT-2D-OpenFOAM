@@ -9,6 +9,13 @@ from __future__ import division, print_function
 import matplotlib.pyplot as plt
 import numpy as np 
 import foampy
+import sys
+
+if len(sys.argv) > 1:
+    logdata = bool(sys.argv[1])
+    data_index = sys.argv[2]
+else:
+    logdata = False
 
 t, torque, drag = foampy.load_all_torque_drag()
 _t, theta, omega = foampy.load_theta_omega(t_interp=t) 
@@ -38,10 +45,15 @@ print("Mean cp:", np.mean(cp[i:i2]))
 cd = drag/(0.5*1000*area*1**2)
 print("Mean cd:", np.mean(cd[i:i2]))
 
-plt.close('all')
-plt.plot(theta[i:i2], cp[i:i2])
-plt.title(r"$\lambda = %1.1f$" %meantsr)
-plt.xlabel(r"$\theta$ (degrees)")
-plt.ylabel(r"$C_P$")
-#plt.ylim((0, 1.0))
-plt.show()
+if logdata:
+    with open("perf.csv", "a") as f:
+        f.write("{},{},{}\n".format(data_index, np.mean(cp[i:i2]), 
+                                    np.mean(cd[i:i2])))
+else:
+    plt.close('all')
+    plt.plot(theta[i:i2], cp[i:i2])
+    plt.title(r"$\lambda = %1.1f$" %meantsr)
+    plt.xlabel(r"$\theta$ (degrees)")
+    plt.ylabel(r"$C_P$")
+    #plt.ylim((0, 1.0))
+    plt.show()
