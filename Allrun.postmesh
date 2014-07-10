@@ -28,5 +28,3 @@ runApplication vorticity
 python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 
 notify-send "OpenFOAM" "Simulation finished."
-
-./perf.py
