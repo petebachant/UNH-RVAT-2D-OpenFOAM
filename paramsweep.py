@@ -38,7 +38,7 @@ def set_blockmesh_resolution(nx):
                                       "vertices", vertices)
 
 def spatial_grid_dep():
-    nx_list = [55, ]
+    nx_list = [55, 65, 75]
     for nx in nx_list:
         set_blockmesh_resolution(nx)
         call("./Allrun")
