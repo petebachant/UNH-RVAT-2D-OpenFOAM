@@ -26,3 +26,4 @@ constant/polyMesh/*
 constant/cellToRegion
 constant/dynamicMeshDict
 *.OpenFOAM
+constant/triSurface/blades.stl
