@@ -41,18 +41,21 @@ def spatial_grid_dep():
     grids = [50, 80, 110, 140]
     cp = []
     cd = []
+    tsr = []
     for grid in grids:
         set_blockmesh_resolution(grid)
         call("./Allrun")
         data = processing.calc_perf()
-        cp.append(data["C_P"]
-        cd.append(data["C_D"]
+        cp.append(data["C_P"])
+        cd.append(data["C_D"])
+        tsr.append(data["TSR"])
         call("./Allclean")
     if not os.path.isdir("processed"):
         os.mkdir("processed")
     pd.DataFrame({"nx" : grids, 
                   "C_P", cp, 
-                  "C_D", cd}).to_csv("processed/spatial_grid_dep.csv")
+                  "C_D", cd,
+                  "TSR", tsr}).to_csv("processed/spatial_grid_dep.csv")
       
 def main():
     spatial_grid_dep()
