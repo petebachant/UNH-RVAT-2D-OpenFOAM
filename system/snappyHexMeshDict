@@ -139,11 +139,11 @@ castellatedMeshControls
         }
         blades
         {
-            level       (5 5);
+            level       (6 6);
         }
         shaft
         {
-            level       (5 5);
+            level       (6 6);
         }
     }
 
@@ -251,7 +251,7 @@ addLayersControls
     // - overall thickness and finalLayerThickness
 
         // Expansion factor for layer mesh
-        expansionRatio 1.1;
+        expansionRatio 1.2;
 
         // Wanted thickness of the layer furthest away from the wall.
         // If relativeSizes this is relative to undistorted size of cell
