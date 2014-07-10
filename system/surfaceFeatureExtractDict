@@ -24,7 +24,7 @@ shaft.stl
     #include "surfaceFeatureExtractDictDefaults"
 }
 
-AMIsurface_z.stl
+AMISurface.stl
 {
     #include "surfaceFeatureExtractDictDefaults"
 }

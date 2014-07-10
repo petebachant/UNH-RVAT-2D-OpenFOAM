@@ -27,7 +27,7 @@ baffles
     {
         //- Use predefined faceZone to select faces and orientation.
         type        faceZone;
-        zoneName    AMIsurface_z;
+        zoneName    AMISurface;
 
 
         patches

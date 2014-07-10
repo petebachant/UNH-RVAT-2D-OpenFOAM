@@ -18,7 +18,7 @@ FoamFile
 actions
 (
     {
-        name    AMIsurface_z;
+        name    AMISurface;
         type    cellSet;
         action  new;
         source  cylinderToCell;
@@ -36,7 +36,7 @@ actions
         source  cellToCell;
         sourceInfo
         {
-            set AMIsurface_z;
+            set AMISurface;
         }
     }
     {
@@ -46,31 +46,31 @@ actions
     }
 
     {
-        name    AMIsurface_z;
+        name    AMISurface;
         type    cellZoneSet;
         action  new;
         source  setToCellZone;
         sourceInfo
         {
-            set     AMIsurface_z;
+            set     AMISurface;
         }
     }
 
 
 
     {
-        name    AMIsurface_zFace;
+        name    AMISurfaceFace;
         type    faceSet;
         action  new;
         source  cellToFace;
         sourceInfo
         {
-            set     AMIsurface_z;
+            set     AMISurface;
             option  all;
         }
     }
     {
-        name    AMIsurface_zFace;
+        name    AMISurfaceFace;
         type    faceSet;
         action  subset;
         source  cellToFace;
@@ -81,14 +81,14 @@ actions
         }
     }
     {
-        name    AMIsurface_z;
+        name    AMISurface;
         type    faceZoneSet;
         action  new;
         source  setsToFaceZone;
         sourceInfo
         {
-            faceSet     AMIsurface_zFace;
-            cellSet     AMIsurface_z;
+            faceSet     AMISurfaceFace;
+            cellSet     AMISurface;
         }
     }
 

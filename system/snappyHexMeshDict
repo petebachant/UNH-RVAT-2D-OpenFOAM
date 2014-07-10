@@ -47,10 +47,10 @@ geometry
         name        shaft;
     }
 
-    AMIsurface_z.stl
+    AMISurface.stl
     {
         type        triSurfaceMesh;
-        name        AMIsurface_z;
+        name        AMISurface;
     }
 };
 
@@ -104,14 +104,14 @@ castellatedMeshControls
     (
         {
             file        "blades.eMesh";
-            level       5;
+            level       6;
         }
         {
             file        "shaft.eMesh";
-            level       3;
+            level       6;
         }
         {
-            file        "AMIsurface_z.eMesh";
+            file        "AMISurface.eMesh";
             level       1;
         }
     );
@@ -129,20 +129,20 @@ castellatedMeshControls
 
     refinementSurfaces
     {
-        AMIsurface_z
+        AMISurface
         {
             level       (0 0);
-            cellZone    AMIsurface_z;
-            faceZone    AMIsurface_z;
+            cellZone    AMISurface;
+            faceZone    AMISurface;
             cellZoneInside  inside;
         }
         blades
         {
-            level       (5 5);
+            level       (6 6);
         }
         shaft
         {
-            level       (5 5);
+            level       (6 6);
         }
     }
 
@@ -171,7 +171,7 @@ castellatedMeshControls
             levels ((1 1));
         }
 
-        AMIsurface_z
+        AMISurface
         {
             mode        inside;
             levels      ((1e15 0)); // Was ((1E15 2));

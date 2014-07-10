@@ -1,4 +1,4 @@
-solid AMIsurface_z
+solid AMISurface
    facet normal -7.641714e-001 6.450133e-001 0.000000e+000
       outer loop
          vertex -4.942639e-001 4.221412e-001 7.500000e-001
