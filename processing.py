@@ -15,7 +15,7 @@ R = 0.5
 U_infty = 1.0
 rho = 1000.0
 
-calc_perf(plot=False):
+def calc_perf(plot=False):
     t, torque, drag = foampy.load_all_torque_drag()
     _t, theta, omega = foampy.load_theta_omega(t_interp=t) 
     # Compute tip speed ratio

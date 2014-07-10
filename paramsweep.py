@@ -9,7 +9,7 @@ import os
 import processing
 import pandas as pd
 
-def set_blockmesh_resolution(nx)
+def set_blockmesh_resolution(nx):
     newres = nx
     resline = "({res} {res} 1)".format(res=newres)
     blocks = """blocks
@@ -38,7 +38,7 @@ def set_blockmesh_resolution(nx)
                                       "vertices", vertices)
 
 def spatial_grid_dep():
-    grids = [50, 80, 110, 140]
+    grids = [50, 80, 110, 140, 180, 220]
     cp = []
     cd = []
     tsr = []
@@ -53,9 +53,9 @@ def spatial_grid_dep():
     if not os.path.isdir("processed"):
         os.mkdir("processed")
     pd.DataFrame({"nx" : grids, 
-                  "C_P", cp, 
-                  "C_D", cd,
-                  "TSR", tsr}).to_csv("processed/spatial_grid_dep.csv")
+                  "C_P" : cp, 
+                  "C_D" : cd,
+                  "TSR" : tsr}).to_csv("processed/spatial_grid_dep.csv")
       
 def main():
     spatial_grid_dep()
