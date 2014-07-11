@@ -38,12 +38,13 @@ def set_blockmesh_resolution(nx):
                                       "vertices", vertices)
 
 def spatial_grid_dep():
-    nx_list = [55, 65, 75]
+    call("rm -f processed/spatial_grid_dep.csv", shell=True)
+    nx_list = [35, 45, 55, 70, 85]
     for nx in nx_list:
+        call("./Allclean")
         set_blockmesh_resolution(nx)
         call("./Allrun")
         processing.log_perf("spatial_grid_dep.csv", verbose=False)
-        call("./Allclean")
       
 def main():
     spatial_grid_dep()
