@@ -104,11 +104,11 @@ castellatedMeshControls
     (
         {
             file        "blades.eMesh";
-            level       6;
+            level       5;
         }
         {
             file        "shaft.eMesh";
-            level       6;
+            level       5;
         }
         {
             file        "AMISurface.eMesh";
@@ -251,7 +251,7 @@ addLayersControls
     // - overall thickness and finalLayerThickness
 
         // Expansion factor for layer mesh
-        expansionRatio 1.2;
+        expansionRatio 1.15;
 
         // Wanted thickness of the layer furthest away from the wall.
         // If relativeSizes this is relative to undistorted size of cell
