@@ -17,6 +17,11 @@ require [foamPy](https://github.com/petebachant/foamPy.git).
     Note that by default the turbine rotates at an angular velocity that is 
     slightly unsteady to match experiments.
   * `prog.py` -- creates a progress bar using PyQt.
+
+To-do
+-----
+  * Larger timesteps
+  * Higher order time schemes
   
 Tagged commits
 --------------
