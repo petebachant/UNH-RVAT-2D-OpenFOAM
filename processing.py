@@ -10,6 +10,7 @@ import numpy as np
 import foampy
 import sys
 import os
+import pandas as pd
 
 area = 0.05
 R = 0.5
@@ -113,9 +114,25 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         cd=data["C_D"],
                         ypmin=yplus["min"],
                         ypmax=yplus["max"],
-                        ypmean=yplus["mean"])) 
+                        ypmean=yplus["mean"]))
+                        
+def plot_grid_dep(var="time"):
+    df = pd.read_csv("processed/all_perf.csv")
+    if var=="time":
+        df = df[df.nx==95]
+        x = df.maxco
+        xlab = r"$Co_\max$"
+    elif var == "space":
+        df = df[7:15]
+        x = df.nx
+        xlab = "$N_x$"
+    print(df)
+    plt.figure()
+    plt.plot(x, df.cp, "ok")
+    plt.xlabel(xlab, fontsize=16)
+    plt.ylabel("$C_P$", fontsize=16)
+    plt.show()
 
 if __name__ == "__main__":
-    print(get_max_courant_no())
-    calc_perf(plot=False)
+    plot_grid_dep("time")
     
