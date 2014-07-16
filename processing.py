@@ -11,6 +11,8 @@ import foampy
 import sys
 import os
 import pandas as pd
+from pxl import styleplot
+
 
 area = 0.05
 R = 0.5
@@ -128,16 +130,20 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ypmax=yplus["max"],
                         ypmean=yplus["mean"]))
                         
-def plot_grid_dep(var="time"):
+def plot_grid_dep(var="nx"):
     df = pd.read_csv("processed/all_perf.csv")
-    if var=="time":
+    if var=="maxCo":
         df = df[df.nx==95]
         x = df.maxco
         xlab = r"$Co_\max$"
-    elif var == "space":
+    elif var == "nx":
         df = df[7:15]
         x = df.nx
         xlab = "$N_x$"
+    elif var=="deltaT":
+        df = df[np.isnan(df.maxco)]
+        x = df.deltat
+        xlab = r"$\Delta t$"
     print(df)
     plt.figure()
     plt.plot(x, df.cp, "ok")
@@ -146,5 +152,5 @@ def plot_grid_dep(var="time"):
     plt.show()
 
 if __name__ == "__main__":
-    plot_grid_dep("time")
+    plot_grid_dep("maxCo")
     
