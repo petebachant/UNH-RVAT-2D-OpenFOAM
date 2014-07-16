@@ -152,5 +152,5 @@ def plot_grid_dep(var="nx"):
     plt.show()
 
 if __name__ == "__main__":
-    plot_grid_dep("maxCo")
+    plot_grid_dep("deltaT")
     
