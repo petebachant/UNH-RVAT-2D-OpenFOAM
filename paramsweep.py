@@ -36,6 +36,10 @@ def set_blockmesh_resolution(nx):
                                       "blocks", blocks)
     foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict", 
                                       "vertices", vertices)
+                                      
+def set_timestep(dt):
+    dt = str(dt)
+    foampy.dictionaries.replace_value("system/controlDict", "deltaT", dt)
 
 def spatial_grid_dep():
     call("rm -f processed/spatial_grid_dep.csv", shell=True)
@@ -45,10 +49,15 @@ def spatial_grid_dep():
         set_blockmesh_resolution(nx)
         call("./Allrun")
         processing.log_perf("spatial_grid_dep.csv", verbose=False)
-      
-def main():
-    spatial_grid_dep()
+        
+def timestep_dep():
+    call("rm -f processed/timestep_dep.csv", shell=True)
+    dt_list = [8e-3, 4e-3, 2e-3, 1e-3, 7e-4, 5e-4]
+    for dt in dt_list:
+        call("./Allclean")
+        set_timestep(dt)
+        call("./Allrun")
+        processing.log_perf("timestep_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    main()
-
+    timestep_dep()
