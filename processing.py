@@ -75,8 +75,9 @@ def calc_perf(plot=False, verbose=True):
     # Pick an index to start from for mean calculations and plotting
     # (allow turbine to reach steady state)
     try:
-        i = np.where(np.round(theta) == 361)[0][0]
+        i = np.where(np.round(theta) == 360)[0][0]
     except IndexError:
+        print("Target index not found")
         i = 5
     i2 = -1
     # Compute mean TSR
@@ -100,9 +101,14 @@ def calc_perf(plot=False, verbose=True):
         plt.ylabel(r"$C_P$")
         #plt.ylim((0, 1.0))
         plt.show()
-    return {"C_P" : meancp, 
-            "C_D" : meancd, 
-            "TSR" : meantsr}
+    if i != 5:
+        return {"C_P" : meancp, 
+                "C_D" : meancd, 
+                "TSR" : meantsr}
+    else:
+        return {"C_P" : "nan", 
+                "C_D" : "nan", 
+                "TSR" : "nan"}
             
 def log_perf(logname="all_perf.csv", mode="a", verbose=True):
     """Logs mean performance calculations to CSV file. If file exists, data
