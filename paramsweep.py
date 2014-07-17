@@ -55,6 +55,7 @@ def timestep_dep():
     dt_list = [8e-3, 4e-3, 2e-3, 1e-3, 7e-4, 5e-4]
     for dt in dt_list:
         call("./Allclean")
+        print("Setting timestep to {}".format(dt))
         set_timestep(dt)
         call("./Allrun")
         processing.log_perf("timestep_dep.csv", verbose=False)
