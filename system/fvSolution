@@ -95,7 +95,7 @@ relaxationFactors
     }
     equations
     {
-        "(U|k|omega)"      0.8; // 0.7;
+        "(U|k|omega)"      0.9; // 0.7;
         "(U|k|omega)Final" 1.0; // 1.0;
     }
 }
