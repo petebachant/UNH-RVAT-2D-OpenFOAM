@@ -5,10 +5,10 @@ cd ${0%/*} || exit 1    # run from this directory
 . $WM_PROJECT_DIR/bin/tools/CleanFunctions
 
 # Delete all integer time directories
-ls | grep -P "^[0-9]$" | xargs -d"\n" rm
+ls | grep -P "^[0-9]$" | xargs -d"\n" rm -rf
 
 # Delete all decimal time directories
-ls | grep -P "^[0-9].*[0-9]$" | xargs -d"\n" rm
+ls | grep -P "^[0-9].*[0-9]$" | xargs -d"\n" rm -rf
 
 rm -rf processor* 
 rm -rf postProcessing
