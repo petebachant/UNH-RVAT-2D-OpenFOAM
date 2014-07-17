@@ -136,8 +136,8 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ypmax=yplus["max"],
                         ypmean=yplus["mean"]))
                         
-def plot_grid_dep(var="nx"):
-    df = pd.read_csv("processed/all_perf.csv")
+def plot_grid_dep(var="nx", show=True):
+    df = pd.read_csv("processed/timestep_dep.csv")
     if var=="maxCo":
         df = df[df.nx==95]
         x = df.maxco
@@ -148,14 +148,14 @@ def plot_grid_dep(var="nx"):
         xlab = "$N_x$"
     elif var=="deltaT":
         df = df[np.isnan(df.maxco)]
-        x = df.deltat
+        x = df.dt
         xlab = r"$\Delta t$"
     elif var=="stepsPerRev":
         tsr = 1.9
         omega = tsr*U_infty/R
         rev_per_sec = omega/(2*np.pi)
         df = df[np.isnan(df.maxco)]
-        sec_per_step = df.deltat
+        sec_per_step = df.dt
         step_per_rev = sec_per_step**(-1)*rev_per_sec**(-1)
         x = step_per_rev
         xlab = "Steps per revolution"
@@ -164,8 +164,10 @@ def plot_grid_dep(var="nx"):
     plt.plot(x, df.cp, "ok")
     plt.xlabel(xlab, fontsize=16)
     plt.ylabel("$C_P$", fontsize=16)
-    plt.show()
+    if show:
+        plt.show()
 
 if __name__ == "__main__":
-    plot_grid_dep("deltaT")
+    plot_grid_dep("deltaT", show=False)
+    plot_grid_dep("stepsPerRev")
     
