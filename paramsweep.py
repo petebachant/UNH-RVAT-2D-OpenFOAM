@@ -42,7 +42,7 @@ def set_timestep(dt):
     foampy.dictionaries.replace_value("system/controlDict", "deltaT", dt)
     
 def set_maxco(maxco):
-    maxco = str(dt)
+    maxco = str(maxco)
     foampy.dictionaries.replace_value("system/controlDict", "maxCo", maxco)
 
 def spatial_grid_dep():
@@ -76,4 +76,4 @@ def maxco_dep():
         processing.log_perf("maxco_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    timestep_dep()
+    maxco_dep()
