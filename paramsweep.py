@@ -40,6 +40,10 @@ def set_blockmesh_resolution(nx):
 def set_timestep(dt):
     dt = str(dt)
     foampy.dictionaries.replace_value("system/controlDict", "deltaT", dt)
+    
+def set_maxco(maxco):
+    maxco = str(dt)
+    foampy.dictionaries.replace_value("system/controlDict", "maxCo", maxco)
 
 def spatial_grid_dep():
     call("rm -f processed/spatial_grid_dep.csv", shell=True)
@@ -59,6 +63,17 @@ def timestep_dep():
         set_timestep(dt)
         call("./Allrun")
         processing.log_perf("timestep_dep.csv", verbose=False)
+        
+def maxco_dep():
+    call("rm -f processed/maxco_dep.csv", shell=True)
+    maxco_list = [40, 20, 10, 5, 2]
+    call("./Allrun.pre")
+    for maxco in maxco_list:
+        call("./Allclean.nomesh")
+        print("Setting maxC0 to {}".format(maxco))
+        set_maxco(maxco)
+        call("./Allrun.postmesh")
+        processing.log_perf("maxco_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
     timestep_dep()
