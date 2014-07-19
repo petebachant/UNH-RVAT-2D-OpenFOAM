@@ -49,6 +49,12 @@ def get_nx():
     nx = int(blocks[3].replace("(", "").split()[0])
     return nx
     
+def get_ddt_scheme():
+    block = foampy.dictionaries.read_text("system/fvSchemes", 
+                                          "ddtSchemes")
+    val = block[2].replace(";", "").split()[1]
+    return val
+    
 def get_max_courant_no():
     if foampy.dictionaries.read_single_line_value("controlDict", 
                                                   "adjustTimeStep",
@@ -124,7 +130,8 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
         nx = get_nx()
         maxco = get_max_courant_no()
         dt = get_deltat()
-        f.write("{dt},{maxco},{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean}\n"\
+        ddt_scheme = get_ddt_scheme()
+        f.write("{dt},{maxco},{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean},{ddt_scheme}\n"\
                 .format(dt=dt,
                         maxco=maxco,
                         nx=nx,
@@ -134,7 +141,8 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         cd=data["C_D"],
                         ypmin=yplus["min"],
                         ypmax=yplus["max"],
-                        ypmean=yplus["mean"]))
+                        ypmean=yplus["mean"],
+                        ddt_scheme=ddt_scheme))
                         
 def plot_grid_dep(var="nx", show=True):
     df = pd.read_csv("processed/timestep_dep.csv")
