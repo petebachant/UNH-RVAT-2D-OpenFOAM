@@ -123,7 +123,7 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
         os.mkdir("processed")
     with open("processed/" + logname, mode) as f:
         if os.stat("processed/" + logname).st_size == 0:
-            f.write("dt,maxco,nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean\n")
+            f.write("dt,maxco,nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean,ddt_scheme\n")
         data = calc_perf(verbose=verbose)
         ncells = get_ncells()
         yplus = get_yplus()
