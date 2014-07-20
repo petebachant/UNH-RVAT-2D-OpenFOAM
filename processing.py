@@ -145,9 +145,11 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ddt_scheme=ddt_scheme))
                         
 def plot_grid_dep(var="nx", show=True):
-    df = pd.read_csv("processed/timestep_dep.csv")
+    df = pd.read_csv("processed/all_perf.csv")
     if var=="maxCo":
         df = df[df.nx==95]
+        df = df[~np.isnan(df.maxco)]
+        df = df[df.ddt_scheme=="Euler"]
         x = df.maxco
         xlab = r"$Co_\max$"
     elif var == "nx":
@@ -176,6 +178,5 @@ def plot_grid_dep(var="nx", show=True):
         plt.show()
 
 if __name__ == "__main__":
-    plot_grid_dep("deltaT", show=False)
-    plot_grid_dep("stepsPerRev")
+    plot_grid_dep("maxCo", show=True)
     
