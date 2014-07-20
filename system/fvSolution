@@ -64,7 +64,8 @@ solvers
 
 PIMPLE
 {
-    correctPhi          no;
+    momentumPredictor   yes;
+    correctPhi          yes;
     nOuterCorrectors    20; // Was 2, set higher for more PIMPLE loops
     nCorrectors         3; // Was 1
     nNonOrthogonalCorrectors 1; // Was 0
