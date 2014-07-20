@@ -17,3 +17,4 @@ rm -f log.pimpleDyMFoam
 rm -f log.vorticity
 rm -f log.decomposePar
 rm -f log.reconstructPar
+rm -f log.yPlus
