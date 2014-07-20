@@ -16,7 +16,7 @@ FoamFile
 
 ddtSchemes
 {
-    default 	    backward;
+    default 	    Euler;
 }
 
 gradSchemes
@@ -30,8 +30,8 @@ divSchemes
 {
     default         none;
     div(phi,U)      Gauss linearUpwind grad(U); // Was Gauss linearUpwind grad(U)
-    div(phi,k)      Gauss limitedLinear 1; // Was Gauss limitedLinear 1
-    div(phi,omega)  Gauss limitedLinear 1; // Was Gauss limitedLinear 1
+    div(phi,k)      Gauss upwind; // Was Gauss limitedLinear 1
+    div(phi,omega)  Gauss upwind; // Was Gauss limitedLinear 1
     div((nuEff*dev(T(grad(U))))) Gauss linear;
 }
 
