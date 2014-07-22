@@ -66,12 +66,12 @@ PIMPLE
 {
     momentumPredictor   yes;
     correctPhi          yes;
-    nOuterCorrectors    20; // Was 2, set higher for more PIMPLE loops
-    nCorrectors         3; // Was 1
+    nOuterCorrectors    1; // Was 2, set higher for more PIMPLE loops
+    nCorrectors         4; // Was 1
     nNonOrthogonalCorrectors 1; // Was 0
     pRefCell            0;
     pRefValue           0;
-
+/*
     residualControl
     {
         U
@@ -86,6 +86,7 @@ PIMPLE
             relTol 0;
         }
     }
+*/
 }
 
 relaxationFactors
