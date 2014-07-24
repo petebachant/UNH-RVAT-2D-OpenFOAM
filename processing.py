@@ -165,6 +165,8 @@ def calc_blade_vel():
     theta_blade_rad = theta_blade/180*np.pi
     rel_vel = []
     alpha = []
+    rel_vel_geom = []
+    alpha_geom = []
     # Calculate an array of thetas that correspond to each sampled point
     for i, t in enumerate(times):
         x = data[t]["x"]
@@ -176,6 +178,14 @@ def calc_blade_vel():
         blade_vel_mag = omega[i]*R
         blade_vel_x = blade_vel_mag*np.cos(theta_blade_rad[i])
         blade_vel_y = blade_vel_mag*np.sin(theta_blade_rad[i])
+        u_geom = 1.0
+        rel_vel_mag_geom = np.sqrt((blade_vel_x + u_geom)**2 + blade_vel_y**2)
+        rel_vel_geom.append(rel_vel_mag_geom)
+        rel_vel_x_geom = u_geom + blade_vel_x
+        rel_vel_y_geom = blade_vel_y
+        relvel_dot_bladevel_geom = (blade_vel_x*rel_vel_x_geom + blade_vel_y*rel_vel_y_geom)
+        _alpha = np.arccos(relvel_dot_bladevel_geom/(rel_vel_mag_geom*blade_vel_mag))
+        alpha_geom.append(_alpha*180/np.pi)
         try:
             ivel = theta.index(theta_probe[i])
             ui = u[ivel]
@@ -192,17 +202,25 @@ def calc_blade_vel():
             alpha.append(np.nan)
     rel_vel = np.array(rel_vel)
     alpha = np.array(alpha)
-    theta_0 = 360
+    alpha[theta_blade > 180] = -alpha[theta_blade > 180]
+    rel_vel_geom = np.array(rel_vel_geom)
+    alpha_geom = np.array(alpha_geom)
+    alpha_geom[theta_blade > 180] = -alpha_geom[theta_blade > 180]
+    theta_0 = 720
     alpha = alpha[theta_turbine > theta_0]
     rel_vel = rel_vel[theta_turbine > theta_0]
+    alpha_geom = alpha_geom[theta_turbine > theta_0]
+    rel_vel_geom = rel_vel_geom[theta_turbine > theta_0]
     theta_turbine = theta_turbine[theta_turbine > theta_0]
     plt.figure(figsize=(8,3))
     plt.subplot(1, 2, 1)
     plt.plot(theta_turbine, alpha, "--ok")
+    plt.plot(theta_turbine, alpha_geom)
     plt.xlabel("Azimuthal angle (degrees)")
     plt.ylabel("Angle of attack (degrees)")
     plt.subplot(1, 2, 2)
     plt.plot(theta_turbine, rel_vel, "--ok")
+    plt.plot(theta_turbine, rel_vel_geom)
     plt.xlabel("Azimuthal angle (degrees)")
     plt.ylabel("Relative velocity (m/s)")
     plt.tight_layout()
