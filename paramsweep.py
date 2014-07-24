@@ -75,6 +75,16 @@ def maxco_dep():
         set_maxco(maxco)
         call("./Allrun.postmesh")
         processing.log_perf("maxco_dep.csv", verbose=False)
+
+def tsr_dep():
+    call("rm -f processed/tsr_dep.csv", shell=True)
+    tsr_list = [3.5, 3.0, 2.5, 2.0, 1.5, 1.0]
+    call("./Allrun.pre")
+    for tsr in tsr_list:
+        call("./Allclean.nomesh")
+        print("Setting tip speed ratio to {}".format(tsr))
+        call("./Allrun.postmesh {}".format(tsr), shell=True)
+        processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    timestep_dep()
+    tsr_dep()

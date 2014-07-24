@@ -19,4 +19,4 @@ else:
 U = 1.0
 R = 0.5
 
-foampy.gen_dynmeshdict(U, R, meantsr, cellzone="AMISurface", npoints=0)
+foampy.gen_dynmeshdict(U, R, meantsr, cellzone="AMISurface", npoints=500)
