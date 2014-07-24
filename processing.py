@@ -161,7 +161,7 @@ def calc_blade_vel():
     _t, theta_blade, omega = foampy.load_theta_omega(t_interp=times)
     theta_turbine = theta_blade*1
     theta_blade = theta_blade.round(decimals=0) % 360
-    theta_probe = theta_blade + 3
+    theta_probe = theta_blade + 4
     theta_blade_rad = theta_blade/180*np.pi
     rel_vel = []
     alpha = []
