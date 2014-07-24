@@ -56,7 +56,7 @@ def spatial_grid_dep():
         
 def timestep_dep():
     call("rm -f processed/timestep_dep.csv", shell=True)
-    dt_list = [6e-3, 4e-3, 3e-3, 2.5e-3, 2e-3, 1.5e-3, 1e-3, 7e-4, 5e-4]
+    dt_list = [3e-3, 2.5e-3, 2e-3, 1.5e-3, 1e-3, 7e-4, 5e-4, 2e-4]
     call("./Allrun.pre")
     for dt in dt_list:
         call("./Allclean.nomesh")
@@ -75,6 +75,16 @@ def maxco_dep():
         set_maxco(maxco)
         call("./Allrun.postmesh")
         processing.log_perf("maxco_dep.csv", verbose=False)
+
+def tsr_dep():
+    call("rm -f processed/tsr_dep.csv", shell=True)
+    tsr_list = [3.5, 3.0, 2.5, 2.0, 1.5, 1.0]
+    call("./Allrun.pre")
+    for tsr in tsr_list:
+        call("./Allclean.nomesh")
+        print("Setting tip speed ratio to {}".format(tsr))
+        call("./Allrun.postmesh {}".format(tsr), shell=True)
+        processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    maxco_dep()
+    tsr_dep()
