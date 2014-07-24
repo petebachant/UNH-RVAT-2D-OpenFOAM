@@ -11,8 +11,6 @@ import foampy
 import sys
 import os
 import pandas as pd
-from pxl import styleplot
-
 
 area = 0.05
 R = 0.5
