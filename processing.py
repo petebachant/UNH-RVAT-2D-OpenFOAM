@@ -134,7 +134,6 @@ def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
         except ValueError:
             t.append(float(time1))
     t.sort()
-    # create am empty data dictionary
     data = {"time" : t}
     for ts in t:
         filename = "{folder}/{time}/{name}_{q}.{fmt}".format(folder=folder,
@@ -152,6 +151,33 @@ def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
                     data[ts]["y"] = d[:,1]
                     data[ts]["z"] = d[:,2]
     return data
+    
+def calc_blade_vel():
+    """Calculates blade angle of attack and relative velocity time series."""
+    # Load sampled data
+    data = load_set(name="bladePath", quantity="U")
+    times = data["time"]
+    # Load turbine azimuthal angle time series
+    _t, theta_blade, omega = foampy.load_theta_omega(t_interp=times)
+    theta_blade = theta_blade.round(decimals=0) % 360
+    theta_probe = theta_blade + 10
+    rel_vel = []
+    alpha = []
+    # Calculate an array of thetas that correspond to each sampled point
+    for i, t in enumerate(times):
+        x = data[t]["x"]
+        y = data[t]["y"]
+        u = data[t]["u"]
+        v = data[t]["v"]
+        theta = np.round(np.arctan2(-x, y)*180/np.pi, decimals=0)
+        theta = [(360 + th) % 360 for th in theta]
+        try:
+            ivel = theta.index(theta_probe[i])
+            rel_vel.append(np.sqrt(u[ivel]**2 + v[ivel]**2))
+        except ValueError:
+            rel_vel.append(np.nan)
+    plt.plot(times, rel_vel)
+        
             
 def log_perf(logname="all_perf.csv", mode="a", verbose=True):
     """Logs mean performance calculations to CSV file. If file exists, data
@@ -237,5 +263,4 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
 
 if __name__ == "__main__":
 #    plot_grid_dep("deltaT", show=True)
-    d = load_set(name="bladePath", quantity="U")
-    print(d[0]["x"])
+    calc_blade_vel()
