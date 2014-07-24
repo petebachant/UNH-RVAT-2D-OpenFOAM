@@ -138,10 +138,7 @@ def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
     data = {"time" : t}
     for ts in t:
         filename = "{folder}/{time}/{name}_{q}.{fmt}".format(folder=folder,
-                                                             time=ts,
-                                                             name=name,
-                                                             q=quantity,
-                                                             fmt=fmt)
+            time=ts, name=name, q=quantity, fmt=fmt)
         with open(filename) as f:
             d = np.loadtxt(f)
             if quantity == "U":
