@@ -159,8 +159,10 @@ def calc_blade_vel():
     times = data["time"]
     # Load turbine azimuthal angle time series
     _t, theta_blade, omega = foampy.load_theta_omega(t_interp=times)
+    theta_turbine = theta_blade*1
     theta_blade = theta_blade.round(decimals=0) % 360
     theta_probe = theta_blade + 10
+    theta_blade_rad = theta_blade/180*np.pi
     rel_vel = []
     alpha = []
     # Calculate an array of thetas that correspond to each sampled point
@@ -171,12 +173,17 @@ def calc_blade_vel():
         v = data[t]["v"]
         theta = np.round(np.arctan2(-x, y)*180/np.pi, decimals=0)
         theta = [(360 + th) % 360 for th in theta]
+        blade_vel_mag = omega[i]*R
+        blade_vel_x = blade_vel_mag*np.cos(theta_blade_rad[i])
+        blade_vel_y = blade_vel_mag*np.sin(theta_blade_rad[i])
         try:
             ivel = theta.index(theta_probe[i])
-            rel_vel.append(np.sqrt(u[ivel]**2 + v[ivel]**2))
+            ui = u[ivel]
+            vi = v[ivel]
+            rel_vel.append(np.sqrt((blade_vel_x + ui)**2 + (blade_vel_y + vi)**2))
         except ValueError:
             rel_vel.append(np.nan)
-    plt.plot(times, rel_vel)
+    plt.plot(theta_turbine, rel_vel)
         
             
 def log_perf(logname="all_perf.csv", mode="a", verbose=True):
