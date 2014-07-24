@@ -28,6 +28,16 @@ sets
         end         (1.0 1.5 0.05);
         nPoints     301;
     }
+
+    bladePath
+    {
+        type        circle;
+        origin      (0 0 0);     // Origin (x, y, z) in global cartesian co-ordinates
+        circleAxis  (0 0 1);     // Axis of the circle
+        startPoint  (0 0.5 0.05);
+        dTheta      2;           // Sampling interval in degrees about the origin
+        axis        xyz;         
+    }
 );
 
 fields
