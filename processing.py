@@ -115,6 +115,46 @@ def calc_perf(plot=False, verbose=True):
         return {"C_P" : "nan", 
                 "C_D" : "nan", 
                 "TSR" : "nan"}
+                
+def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
+    """Imports text data created with the OpenFOAM sample utility"""
+    if casedir != "":
+        folder = casedir + "/postProcessing/sets"
+    else:
+        folder = "postProcessing/sets"
+    t = []
+    times = os.listdir(folder)
+    for time1 in times:
+        try: 
+            float(time1)
+        except ValueError: 
+            times.remove(time1)
+        try:
+            t.append(int(time1))
+        except ValueError:
+            t.append(float(time1))
+    t.sort()
+    # create am empty data dictionary
+    data = {"time" : t}
+    for ts in t:
+        filename = "{folder}/{time}/{name}_{q}.{fmt}".format(folder=folder,
+                                                             time=ts,
+                                                             name=name,
+                                                             q=quantity,
+                                                             fmt=fmt)
+        with open(filename) as f:
+            d = np.loadtxt(f)
+            if quantity == "U":
+                data[ts] = {"u" : d[:, len(axis)],
+                            "v" : d[:, len(axis)+1],
+                            "w" : d[:, len(axis)+2]}
+                if len(axis) == 1:
+                    data[ts][axis] = d[:,0]
+                else:
+                    data[ts]["x"] = d[:,0]
+                    data[ts]["y"] = d[:,1]
+                    data[ts]["z"] = d[:,2]
+    return data
             
 def log_perf(logname="all_perf.csv", mode="a", verbose=True):
     """Logs mean performance calculations to CSV file. If file exists, data
@@ -200,5 +240,5 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
 
 if __name__ == "__main__":
 #    plot_grid_dep("deltaT", show=True)
-    plot_perf_curve()
-    
+    d = load_set(name="bladePath", quantity="U")
+    print(d[0]["x"])
