@@ -145,7 +145,7 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ddt_scheme=ddt_scheme))
                         
 def plot_grid_dep(var="nx", show=True):
-    df = pd.read_csv("processed/all_perf.csv")
+    df = pd.read_csv("processed/timestep_dep.csv")
     if var=="maxCo":
         df = df[df.nx==95]
         df = df[~np.isnan(df.maxco)]
@@ -176,7 +176,26 @@ def plot_grid_dep(var="nx", show=True):
     plt.ylabel("$C_P$", fontsize=16)
     if show:
         plt.show()
+        
+def plot_perf_curve(show=True):
+    """Plots the performance curve read from processed/tsr_dep.csv."""
+    df = pd.read_csv("processed/tsr_dep.csv")
+    plt.figure(figsize=(8,3))
+    plt.subplot(1, 2, 1)
+    plt.plot(df.tsr, df.cp, "ok")
+    plt.xlim((0,None))
+    plt.xlabel(r"$\lambda$")
+    plt.ylabel(r"$C_P$")
+    plt.subplot(1, 2, 2)
+    plt.plot(df.tsr, df.cd, "ok")
+    plt.ylim((0,2))
+    plt.xlabel(r"$\lambda$")
+    plt.ylabel(r"$C_D$")
+    plt.tight_layout()
+    if show:
+        plt.show()
 
 if __name__ == "__main__":
-    plot_grid_dep("maxCo", show=True)
+#    plot_grid_dep("deltaT", show=True)
+    plot_perf_curve()
     
