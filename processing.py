@@ -188,6 +188,7 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
     plt.ylabel(r"$C_P$", fontsize=16)
     plt.subplot(1, 2, 2)
     plt.plot(df.tsr, df.cd, "ok")
+    plt.xlim((0,None))
     plt.ylim((0,2))
     plt.xlabel(r"$\lambda$", fontsize=16)
     plt.ylabel(r"$C_D$", fontsize=16)
