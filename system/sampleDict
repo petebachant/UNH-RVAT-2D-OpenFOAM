@@ -32,10 +32,10 @@ sets
     bladePath
     {
         type        circle;
-        origin      (0 0 0);     // Origin (x, y, z) in global cartesian co-ordinates
+        origin      (-0.14 0 0.05);     // Origin (x, y, z) in global cartesian co-ordinates
         circleAxis  (0 0 1);     // Axis of the circle
-        startPoint  (0 0.5 0.05);
-        dTheta      2;           // Sampling interval in degrees about the origin
+        startPoint  (-0.14 0.5 0.05);
+        dTheta      1;           // Sampling interval in degrees about the origin
         axis        xyz;         
     }
 );

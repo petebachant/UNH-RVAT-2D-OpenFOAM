@@ -161,11 +161,10 @@ def calc_blade_vel():
     _t, theta_blade, omega = foampy.load_theta_omega(t_interp=times)
     theta_turbine = theta_blade*1
     theta_blade = theta_blade.round(decimals=0) % 360
-    theta_probe = theta_blade + 10
+    theta_probe = theta_blade + 3
     theta_blade_rad = theta_blade/180*np.pi
     rel_vel = []
     alpha = []
-    ttt = []
     # Calculate an array of thetas that correspond to each sampled point
     for i, t in enumerate(times):
         x = data[t]["x"]
@@ -176,7 +175,6 @@ def calc_blade_vel():
         theta = [(360 + th) % 360 for th in theta]
         blade_vel_mag = omega[i]*R
         blade_vel_x = blade_vel_mag*np.cos(theta_blade_rad[i])
-        print(theta_blade[i], blade_vel_x)
         blade_vel_y = blade_vel_mag*np.sin(theta_blade_rad[i])
         try:
             ivel = theta.index(theta_probe[i])
@@ -194,9 +192,22 @@ def calc_blade_vel():
             alpha.append(np.nan)
     rel_vel = np.array(rel_vel)
     alpha = np.array(alpha)
-    plt.plot(theta_blade, rel_vel*0.14/1e-6, "ok")
+    theta_0 = 360
+    alpha = alpha[theta_turbine > theta_0]
+    rel_vel = rel_vel[theta_turbine > theta_0]
+    theta_turbine = theta_turbine[theta_turbine > theta_0]
+    plt.figure(figsize=(8,3))
+    plt.subplot(1, 2, 1)
+    plt.plot(theta_turbine, alpha, "--ok")
+    plt.xlabel("Azimuthal angle (degrees)")
+    plt.ylabel("Angle of attack (degrees)")
+    plt.subplot(1, 2, 2)
+    plt.plot(theta_turbine, rel_vel, "--ok")
+    plt.xlabel("Azimuthal angle (degrees)")
+    plt.ylabel("Relative velocity (m/s)")
+    plt.tight_layout()
+    plt.show()
         
-            
 def log_perf(logname="all_perf.csv", mode="a", verbose=True):
     """Logs mean performance calculations to CSV file. If file exists, data
     is appended."""
