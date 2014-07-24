@@ -165,6 +165,7 @@ def calc_blade_vel():
     theta_blade_rad = theta_blade/180*np.pi
     rel_vel = []
     alpha = []
+    ttt = []
     # Calculate an array of thetas that correspond to each sampled point
     for i, t in enumerate(times):
         x = data[t]["x"]
@@ -175,15 +176,25 @@ def calc_blade_vel():
         theta = [(360 + th) % 360 for th in theta]
         blade_vel_mag = omega[i]*R
         blade_vel_x = blade_vel_mag*np.cos(theta_blade_rad[i])
+        print(theta_blade[i], blade_vel_x)
         blade_vel_y = blade_vel_mag*np.sin(theta_blade_rad[i])
         try:
             ivel = theta.index(theta_probe[i])
             ui = u[ivel]
             vi = v[ivel]
-            rel_vel.append(np.sqrt((blade_vel_x + ui)**2 + (blade_vel_y + vi)**2))
+            rel_vel_mag = np.sqrt((blade_vel_x + ui)**2 + (blade_vel_y + vi)**2)
+            rel_vel.append(rel_vel_mag)
+            rel_vel_x = ui + blade_vel_x
+            rel_vel_y = vi + blade_vel_y
+            relvel_dot_bladevel = (blade_vel_x*rel_vel_x + blade_vel_y*rel_vel_y)
+            _alpha = np.arccos(relvel_dot_bladevel/(rel_vel_mag*blade_vel_mag))
+            alpha.append(_alpha*180/np.pi)
         except ValueError:
             rel_vel.append(np.nan)
-    plt.plot(theta_turbine, rel_vel)
+            alpha.append(np.nan)
+    rel_vel = np.array(rel_vel)
+    alpha = np.array(alpha)
+    plt.plot(theta_blade, rel_vel*0.14/1e-6, "ok")
         
             
 def log_perf(logname="all_perf.csv", mode="a", verbose=True):
