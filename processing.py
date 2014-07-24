@@ -177,21 +177,23 @@ def plot_grid_dep(var="nx", show=True):
     if show:
         plt.show()
         
-def plot_perf_curve(show=True):
+def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
     """Plots the performance curve read from processed/tsr_dep.csv."""
     df = pd.read_csv("processed/tsr_dep.csv")
     plt.figure(figsize=(8,3))
     plt.subplot(1, 2, 1)
     plt.plot(df.tsr, df.cp, "ok")
     plt.xlim((0,None))
-    plt.xlabel(r"$\lambda$")
-    plt.ylabel(r"$C_P$")
+    plt.xlabel(r"$\lambda$", fontsize=16)
+    plt.ylabel(r"$C_P$", fontsize=16)
     plt.subplot(1, 2, 2)
     plt.plot(df.tsr, df.cd, "ok")
     plt.ylim((0,2))
-    plt.xlabel(r"$\lambda$")
-    plt.ylabel(r"$C_D$")
+    plt.xlabel(r"$\lambda$", fontsize=16)
+    plt.ylabel(r"$C_D$", fontsize=16)
     plt.tight_layout()
+    if save:
+        plt.savefig(os.path.join(savepath, "perf_curves") + savetype)
     if show:
         plt.show()
 
