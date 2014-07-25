@@ -11,6 +11,7 @@ import foampy
 import sys
 import os
 import pandas as pd
+from pxl import fdiff
 
 area = 0.05
 R = 0.5
@@ -87,7 +88,7 @@ def calc_perf(plot=False, verbose=True, inertial=False):
     # Compute mean TSR
     meantsr = np.mean(tsr[i:i2])
     if inertial:
-        inertia = 10 # guess from SolidWorks model
+        inertia = 3 # guess from SolidWorks model
         inertial_torque = inertia*fdiff.second_order_diff(omega, t)
         torque -= inertial_torque
     # Compute power coefficient

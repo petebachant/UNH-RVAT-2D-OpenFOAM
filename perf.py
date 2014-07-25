@@ -7,4 +7,4 @@ Created on Thu Aug  8 09:22:09 2013
 """
 import processing
 
-processing.calc_perf(plot=True)
+processing.calc_perf(plot=True, inertial=False)
