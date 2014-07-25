@@ -71,7 +71,7 @@ def get_deltat():
     else:
         return "nan"
 
-def calc_perf(plot=False, verbose=True):
+def calc_perf(plot=False, verbose=True, inertial=False):
     t, torque, drag = foampy.load_all_torque_drag()
     _t, theta, omega = foampy.load_theta_omega(t_interp=t)
     # Compute tip speed ratio
@@ -83,9 +83,13 @@ def calc_perf(plot=False, verbose=True):
     except IndexError:
         print("Target index not found")
         i = 5
-    i2 = -1
+    i2 = None
     # Compute mean TSR
     meantsr = np.mean(tsr[i:i2])
+    if inertial:
+        inertia = 10 # guess from SolidWorks model
+        inertial_torque = inertia*fdiff.second_order_diff(omega, t)
+        torque -= inertial_torque
     # Compute power coefficient
     power = torque*omega
     cp = power/(0.5*rho*area*U_infty**3)
