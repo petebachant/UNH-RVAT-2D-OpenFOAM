@@ -44,7 +44,7 @@ solvers
         relTol          0; // Was 0
     }
 
-    "(U|k|omega)"
+    "(U|k|omega|nuTilda)"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
@@ -52,7 +52,7 @@ solvers
         relTol          0.1;
     }
 
-    "(U|k|omega)Final"
+    "(U|k|omega|nuTilda)Final"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
@@ -64,14 +64,13 @@ solvers
 
 PIMPLE
 {
-    momentumPredictor   yes;
     correctPhi          yes;
-    nOuterCorrectors    1; // Was 2, set higher for more PIMPLE loops
-    nCorrectors         4; // Was 1
+    nOuterCorrectors    20; // Was 2, set higher for more PIMPLE loops
+    nCorrectors         3; // Was 1
     nNonOrthogonalCorrectors 1; // Was 0
     pRefCell            0;
     pRefValue           0;
-/*
+
     residualControl
     {
         U
@@ -86,7 +85,7 @@ PIMPLE
             relTol 0;
         }
     }
-*/
+
 }
 
 relaxationFactors
