@@ -33,6 +33,9 @@ divSchemes
     div(phi,k)      Gauss upwind; // Was Gauss limitedLinear 1
     div(phi,omega)  Gauss upwind; // Was Gauss limitedLinear 1
     div(phi,nuTilda) Gauss linearUpwind grad(nuTilda);
+    div(phi,v2)     Gauss upwind;
+    div(phi,f)      Gauss upwind;
+    div(phi,epsilon) Gauss upwind;
     div((nuEff*dev(T(grad(U))))) Gauss linear;
 }
 

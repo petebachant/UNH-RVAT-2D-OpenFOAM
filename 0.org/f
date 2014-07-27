@@ -10,33 +10,44 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    location    "0";
-    object      nut;
+    object      f;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -1 0 0 0 0];
+#include        "include/initialConditions"
 
-internalField   uniform 1e-7;
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0;
 
 boundaryField
 {
+    inlet
+    {
+        type            zeroGradient;
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+
     blades
     {
-        type            nutUWallFunction;
-        value           uniform 1e-12;
+        type            fWallFunction;
+        value           $internalField;
     }
 
     shaft
     {
-        type            nutUWallFunction;
-        value           uniform 1e-12;
+        type            fWallFunction;
+        value           $internalField;
     }
 
-    "(inlet|outlet)"
+    walls
     {
-        type            calculated;
-        value           uniform 0;
+        type            fWallFunction;
+        value           $internalField;
     }
 
     front
@@ -49,14 +60,9 @@ boundaryField
         type            empty;
     }
 
-    walls
-    {
-        type            nutkWallFunction;
-        value           uniform 0;
-    }
-
     #include "include/AMI"
-}
 
+//    #include "include/frontBackTopBottomPatches"
+}
 
 // ************************************************************************* //

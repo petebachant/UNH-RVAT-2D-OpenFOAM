@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-RASModel        SpalartAllmaras;
+RASModel        v2f;
 
 turbulence      on;
 

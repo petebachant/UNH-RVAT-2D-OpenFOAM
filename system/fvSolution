@@ -44,7 +44,7 @@ solvers
         relTol          0; // Was 0
     }
 
-    "(U|k|omega|nuTilda)"
+    "(U|k|omega|nuTilda|v2|f|epsilon)"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
@@ -52,7 +52,7 @@ solvers
         relTol          0.1;
     }
 
-    "(U|k|omega|nuTilda)Final"
+    "(U|k|omega|nuTilda|v2|f|epsilon)Final"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
