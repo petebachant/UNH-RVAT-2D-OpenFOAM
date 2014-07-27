@@ -47,13 +47,13 @@ runTimeModifiable true;
 
 adjustTimeStep  yes;
 
-maxCo           0.5;
+maxCo           25;
 
 libs
 (
     "libOpenFOAM.so"
     "libforces.so"
-//    "libmyIncompressibleRASModels.so"
+//  "libmyIncompressibleRASModels.so"
 );
 
 functions
