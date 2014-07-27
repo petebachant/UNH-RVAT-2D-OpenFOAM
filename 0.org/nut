@@ -23,13 +23,13 @@ boundaryField
 {
     blades
     {
-        type            nutUWallFunction;
+        type            nutUSpaldingWallFunction;
         value           uniform 1e-12;
     }
 
     shaft
     {
-        type            nutUWallFunction;
+        type            nutUSpaldingWallFunction;
         value           uniform 1e-12;
     }
 
@@ -51,7 +51,7 @@ boundaryField
 
     walls
     {
-        type            nutkWallFunction;
+        type            nutUSpaldingWallFunction;
         value           uniform 0;
     }
 
