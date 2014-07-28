@@ -83,7 +83,7 @@ def calc_perf(plot=False, verbose=True, inertial=False):
         i = np.where(np.round(theta) == 360)[0][0]
     except IndexError:
         print("Target index not found")
-        i = 5
+        i = 50
     i2 = None
     # Compute mean TSR
     meantsr = np.mean(tsr[i:i2])
