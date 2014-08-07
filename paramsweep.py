@@ -67,7 +67,7 @@ def timestep_dep():
         
 def maxco_dep():
     call("rm -f processed/maxco_dep.csv", shell=True)
-    maxco_list = [40, 20, 10, 5, 2, 0.9, 0.5]
+    maxco_list = [100, 70, 40, 20, 10, 5, 2, 0.9, 0.5]
     call("./Allrun.pre")
     for maxco in maxco_list:
         call("./Allclean.nomesh")
@@ -87,4 +87,4 @@ def tsr_dep():
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    tsr_dep()
+    maxco_dep()
