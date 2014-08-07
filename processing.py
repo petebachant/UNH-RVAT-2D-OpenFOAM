@@ -258,22 +258,26 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ddt_scheme=ddt_scheme))
                         
 def plot_grid_dep(var="nx", show=True):
-    df = pd.read_csv("processed/timestep_dep.csv")
     if var=="maxCo":
+        df = pd.read_csv("processed/maxco_dep.csv")
         df = df[df.nx==95]
         df = df[~np.isnan(df.maxco)]
         df = df[df.ddt_scheme=="Euler"]
+        df = df[np.abs(df.cp) < 1]
         x = df.maxco
         xlab = r"$Co_\max$"
     elif var == "nx":
+        df = pd.read_csv("processed/spatial_grid_dep.csv")
         df = df[7:15]
         x = df.nx
         xlab = "$N_x$"
     elif var=="deltaT":
+        df = pd.read_csv("processed/timestep_dep.csv")
         df = df[np.isnan(df.maxco)]
         x = df.dt
         xlab = r"$\Delta t$"
     elif var=="stepsPerRev":
+        df = pd.read_csv("processed/timestep_dep.csv")
         tsr = 1.9
         omega = tsr*U_infty/R
         rev_per_sec = omega/(2*np.pi)
@@ -285,8 +289,10 @@ def plot_grid_dep(var="nx", show=True):
     print(df)
     plt.figure()
     plt.plot(x, df.cp, "ok")
+    plt.ylim((0, 0.3))
     plt.xlabel(xlab, fontsize=16)
     plt.ylabel("$C_P$", fontsize=16)
+    plt.tight_layout()
     if show:
         plt.show()
         
@@ -312,5 +318,5 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
         plt.show()
 
 if __name__ == "__main__":
-#    plot_grid_dep("deltaT", show=True)
-    calc_blade_vel()
+    plot_grid_dep("maxCo", show=True)
+#    calc_blade_vel()
