@@ -6,8 +6,8 @@ cd ${0%/*} || exit 1    # run from this directory
 
 # - meshing
 runApplication blockMesh
-# Choose which blades to use, bladesFlatTE or bladesRoundTE
-cp constant/triSurface/bladesRoundTE.stl constant/triSurface/blades.stl
+# Choose which blades to use
+cp constant/triSurface/bladesQuarterChord.stl constant/triSurface/blades.stl
 runApplication surfaceFeatureExtract
 runApplication snappyHexMesh -overwrite
 runApplication renumberMesh -overwrite
