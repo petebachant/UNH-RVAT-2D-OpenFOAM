@@ -289,7 +289,7 @@ def plot_grid_dep(var="nx", show=True):
     print(df)
     plt.figure()
     plt.plot(x, df.cp, "ok")
-    plt.ylim((0, 0.3))
+    #~ plt.ylim((0, 0.3))
     plt.xlabel(xlab, fontsize=16)
     plt.ylabel("$C_P$", fontsize=16)
     plt.tight_layout()
