@@ -312,6 +312,20 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
     if show:
         plt.show()
 
+def plot_meanu(t0=5.0, show=True, save=False, savepath="./", savetype=".pdf"):
+    data = foampy.load_sample_xy(profile="U")
+    t = data["t"]
+    u = data["u"]
+    y_R = data["y"]/R
+    i = np.array([t >= t0])[0]
+    meanu = np.mean(u[:,i], axis=1)
+    plt.figure()
+    plt.plot(y_R, meanu)
+    if show:
+        plt.show()
+
 if __name__ == "__main__":
-    plot_grid_dep("deltaT", show=True)
+#    plot_grid_dep("deltaT", show=True)
 #    calc_blade_vel()
+    plot_meanu()
+
