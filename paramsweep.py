@@ -56,7 +56,7 @@ def spatial_grid_dep():
         
 def timestep_dep():
     call("rm -f processed/timestep_dep.csv", shell=True)
-    dt_list = [3e-3, 2.5e-3, 2e-3, 1.5e-3, 1e-3, 7e-4, 5e-4, 2e-4]
+    dt_list = [4e-3, 3.5e-3, 3e-3, 2.5e-3, 2e-3, 1.5e-3, 1e-3]
     call("./Allrun.pre")
     for dt in dt_list:
         call("./Allclean.nomesh")
@@ -87,4 +87,4 @@ def tsr_dep():
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    tsr_dep()
+    timestep_dep()

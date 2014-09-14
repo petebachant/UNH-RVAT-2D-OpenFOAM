@@ -265,16 +265,15 @@ def plot_grid_dep(var="nx", show=True):
         xlab = r"$Co_\max$"
     elif var == "nx":
         df = pd.read_csv("processed/spatial_grid_dep.csv")
-        df = df[7:15]
         x = df.nx
         xlab = "$N_x$"
     elif var=="deltaT":
-        df = pd.read_csv("processed/timestep_dep.csv")
+        df = pd.read_csv("processed/timestep_dep_Euler.csv")
         df = df[np.isnan(df.maxco)]
         x = df.dt
         xlab = r"$\Delta t$"
     elif var=="stepsPerRev":
-        df = pd.read_csv("processed/timestep_dep.csv")
+        df = pd.read_csv("processed/timestep_dep_Euler.csv")
         tsr = 1.9
         omega = tsr*U_infty/R
         rev_per_sec = omega/(2*np.pi)
@@ -314,5 +313,5 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
         plt.show()
 
 if __name__ == "__main__":
-    plot_grid_dep("maxCo", show=True)
+    plot_grid_dep("deltaT", show=True)
 #    calc_blade_vel()
