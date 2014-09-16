@@ -13,6 +13,8 @@ import os
 import pandas as pd
 from pxl import fdiff
 
+plt.style.use("fivethirtyeight")
+
 area = 0.05
 R = 0.5
 U_infty = 1.0
