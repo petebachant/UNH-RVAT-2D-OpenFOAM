@@ -45,8 +45,12 @@ def set_maxco(maxco):
     maxco = str(maxco)
     foampy.dictionaries.replace_value("system/controlDict", "maxCo", maxco)
 
-def spatial_grid_dep():
-    call("rm -f processed/spatial_grid_dep.csv", shell=True)
+def spatial_grid_dep(newfile=True):
+    if newfile:
+        try:
+            os.remove("processed/spatial_grid_dep.csv")
+        except OSError:
+            pass
     nx_list = [35, 45, 55, 70, 85]
     for nx in nx_list:
         call("./Allclean")
@@ -54,9 +58,13 @@ def spatial_grid_dep():
         call("./Allrun")
         processing.log_perf("spatial_grid_dep.csv", verbose=False)
         
-def timestep_dep():
-    call("rm -f processed/timestep_dep.csv", shell=True)
-    dt_list = [4e-3, 3.5e-3, 3e-3, 2.5e-3, 2e-3, 1.5e-3, 1e-3]
+def timestep_dep(newfile=True):
+    if newfile:
+        try:
+            os.remove("processed/timestep_dep.csv")
+        except OSError:
+            pass
+    dt_list = [2e-3, 1.5e-3, 1e-3, 0.75e-3, 0.5e-3]
     call("./Allrun.pre")
     for dt in dt_list:
         call("./Allclean.nomesh")
@@ -65,8 +73,12 @@ def timestep_dep():
         call("./Allrun.postmesh")
         processing.log_perf("timestep_dep.csv", verbose=False)
         
-def maxco_dep():
-    call("rm -f processed/maxco_dep.csv", shell=True)
+def maxco_dep(newfile=True):
+    if newfile:
+        try:
+            os.remove("processed/maxco_dep.csv")
+        except OSError:
+            pass
     maxco_list = [40, 20, 10, 5, 2, 0.9, 0.5]
     call("./Allrun.pre")
     for maxco in maxco_list:
@@ -76,8 +88,12 @@ def maxco_dep():
         call("./Allrun.postmesh")
         processing.log_perf("maxco_dep.csv", verbose=False)
 
-def tsr_dep():
-    call("rm -f processed/tsr_dep.csv", shell=True)
+def tsr_dep(newfile=True):
+    if newfile:
+        try:
+            os.remove("processed/tsr_dep.csv")
+        except OSError:
+            pass
     tsr_list = [3.5, 3.0, 2.5, 2.0, 1.5, 1.0]
     call("./Allrun.pre")
     for tsr in tsr_list:
@@ -87,4 +103,4 @@ def tsr_dep():
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    timestep_dep()
+    timestep_dep(newfile=False)
