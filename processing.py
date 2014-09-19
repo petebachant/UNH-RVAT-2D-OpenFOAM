@@ -325,12 +325,15 @@ def plot_meanu(t0=5.0, show=True, save=False, savepath="./", savetype=".pdf"):
     meanu = np.mean(u[:,i], axis=1)
     plt.figure()
     plt.plot(y_R, meanu)
+    plt.xlabel(r"$y/R$")
+    plt.ylabel(r"$U$")
+    plt.tight_layout()
     if show:
         plt.show()
 
 if __name__ == "__main__":
-    plot_grid_dep("nx", show=False)
-    plot_grid_dep("stepsPerRev", show=True)
+#    plot_grid_dep("nx", show=False)
+#    plot_grid_dep("stepsPerRev", show=True)
 #    calc_blade_vel()
-#    plot_meanu()
+    plot_meanu()
 
