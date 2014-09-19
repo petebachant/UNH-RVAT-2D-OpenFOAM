@@ -51,9 +51,10 @@ def spatial_grid_dep(newfile=True):
             os.remove("processed/spatial_grid_dep.csv")
         except OSError:
             pass
-    nx_list = [35, 45, 55, 70, 85]
+    nx_list = [80, 88]
     for nx in nx_list:
         call("./Allclean")
+        print("Setting blockMesh nX to {}".format(nx))
         set_blockmesh_resolution(nx)
         call("./Allrun")
         processing.log_perf("spatial_grid_dep.csv", verbose=False)
@@ -64,7 +65,7 @@ def timestep_dep(newfile=True):
             os.remove("processed/timestep_dep.csv")
         except OSError:
             pass
-    dt_list = [1.25e-3, 1e-3, 0.75e-3]
+    dt_list = [3e-3, 1.5e-3, 1.25e-3, 1e-3]
     call("./Allrun.pre")
     for dt in dt_list:
         call("./Allclean.nomesh")
@@ -103,4 +104,4 @@ def tsr_dep(newfile=True):
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    timestep_dep(newfile=False)
+    timestep_dep(newfile=True)
