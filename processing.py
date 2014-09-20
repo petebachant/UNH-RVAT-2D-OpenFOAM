@@ -13,6 +13,8 @@ import os
 import pandas as pd
 from pxl import fdiff
 
+plt.style.use("fivethirtyeight")
+
 area = 0.05
 R = 0.5
 U_infty = 1.0
@@ -72,21 +74,17 @@ def get_deltat():
     else:
         return "nan"
 
-def calc_perf(plot=False, verbose=True, inertial=False):
+def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
     t, torque, drag = foampy.load_all_torque_drag()
     _t, theta, omega = foampy.load_theta_omega(t_interp=t)
+    reached_theta_0 = True
+    if theta.max() < theta_0:
+        theta_0 = 1
+        reached_theta_0 = False
     # Compute tip speed ratio
     tsr = omega*R/U_infty
-    # Pick an index to start from for mean calculations and plotting
-    # (allow turbine to reach steady state)
-    try:
-        i = np.where(np.round(theta) == 360)[0][0]
-    except IndexError:
-        print("Target index not found")
-        i = 50
-    i2 = None
     # Compute mean TSR
-    meantsr = np.mean(tsr[i:i2])
+    meantsr = np.mean(tsr[theta >= theta_0])
     if inertial:
         inertia = 3 # guess from SolidWorks model
         inertial_torque = inertia*fdiff.second_order_diff(omega, t)
@@ -94,23 +92,26 @@ def calc_perf(plot=False, verbose=True, inertial=False):
     # Compute power coefficient
     power = torque*omega
     cp = power/(0.5*rho*area*U_infty**3)
-    meancp = np.mean(cp[i:i2])
+    meancp = np.mean(cp[theta >= theta_0])
     # Compute drag coefficient
     cd = drag/(0.5*rho*area*U_infty**2)
-    meancd = np.mean(cd[i:i2])
+    meancd = np.mean(cd[theta >= theta_0])
     if verbose:
-        print("Mean TSR =", meantsr)
-        print("Mean C_P =", meancp)
-        print("Mean C_D =", meancd)
+        print("Performance from {:.1f}--{:.1f} degrees:".format(theta_0, 
+                                                                theta.max()))
+        print("Mean TSR = {:.3f}".format(meantsr))
+        print("Mean C_P = {:.3f}".format(meancp))
+        print("Mean C_D = {:.3f}".format(meancd))
     if plot:
         plt.close('all')
-        plt.plot(theta[i:i2], cp[i:i2])
+        plt.plot(theta[5:], cp[5:])
         plt.title(r"$\lambda = %1.1f$" %meantsr)
         plt.xlabel(r"$\theta$ (degrees)")
         plt.ylabel(r"$C_P$")
         #plt.ylim((0, 1.0))
+        plt.tight_layout()
         plt.show()
-    if i != 5:
+    if reached_theta_0:
         return {"C_P" : meancp, 
                 "C_D" : meancd, 
                 "TSR" : meantsr}
@@ -118,6 +119,9 @@ def calc_perf(plot=False, verbose=True, inertial=False):
         return {"C_P" : "nan", 
                 "C_D" : "nan", 
                 "TSR" : "nan"}
+
+def plot_perf():
+    calc_perf(plot=True)
                 
 def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
     """Imports text data created with the OpenFOAM sample utility"""
@@ -268,7 +272,6 @@ def plot_grid_dep(var="nx", show=True):
         xlab = r"$Co_\max$"
     elif var == "nx":
         df = pd.read_csv("processed/spatial_grid_dep.csv")
-        df = df[7:15]
         x = df.nx
         xlab = "$N_x$"
     elif var=="deltaT":
@@ -284,12 +287,12 @@ def plot_grid_dep(var="nx", show=True):
         df = df[np.isnan(df.maxco)]
         sec_per_step = df.dt
         step_per_rev = sec_per_step**(-1)*rev_per_sec**(-1)
+        df["steps_per_rev"] = step_per_rev
         x = step_per_rev
         xlab = "Steps per revolution"
     print(df)
     plt.figure()
     plt.plot(x, df.cp, "ok")
-    plt.ylim((0, 0.3))
     plt.xlabel(xlab, fontsize=16)
     plt.ylabel("$C_P$", fontsize=16)
     plt.tight_layout()
@@ -317,6 +320,24 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
     if show:
         plt.show()
 
+def plot_meanu(t0=5.0, show=True, save=False, savepath="./", savetype=".pdf"):
+    data = foampy.load_sample_xy(profile="U")
+    t = data["t"]
+    u = data["u"]
+    y_R = data["y"]/R
+    i = np.array([t >= t0])[0]
+    meanu = np.mean(u[:,i], axis=1)
+    plt.figure()
+    plt.plot(y_R, meanu)
+    plt.xlabel(r"$y/R$")
+    plt.ylabel(r"$U$")
+    plt.tight_layout()
+    if show:
+        plt.show()
+
 if __name__ == "__main__":
-    plot_grid_dep("maxCo", show=True)
+#    plot_grid_dep("nx", show=False)
+    plot_grid_dep("stepsPerRev", show=True)
 #    calc_blade_vel()
+#    plot_meanu()
+
