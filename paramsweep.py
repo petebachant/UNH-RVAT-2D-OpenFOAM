@@ -65,7 +65,7 @@ def timestep_dep(newfile=True):
             os.remove("processed/timestep_dep.csv")
         except OSError:
             pass
-    dt_list = [0.9e-3, 0.8e-3, 0.7e-3]
+    dt_list = [2.2e-3, 1.8e-3]
     call("./Allrun.pre")
     for dt in dt_list:
         call("./Allclean.nomesh")
