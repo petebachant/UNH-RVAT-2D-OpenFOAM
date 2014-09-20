@@ -119,6 +119,9 @@ def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
         return {"C_P" : "nan", 
                 "C_D" : "nan", 
                 "TSR" : "nan"}
+
+def plot_perf():
+    calc_perf(plot=True)
                 
 def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
     """Imports text data created with the OpenFOAM sample utility"""
@@ -284,6 +287,7 @@ def plot_grid_dep(var="nx", show=True):
         df = df[np.isnan(df.maxco)]
         sec_per_step = df.dt
         step_per_rev = sec_per_step**(-1)*rev_per_sec**(-1)
+        df["steps_per_rev"] = step_per_rev
         x = step_per_rev
         xlab = "Steps per revolution"
     print(df)
@@ -333,7 +337,7 @@ def plot_meanu(t0=5.0, show=True, save=False, savepath="./", savetype=".pdf"):
 
 if __name__ == "__main__":
 #    plot_grid_dep("nx", show=False)
-#    plot_grid_dep("stepsPerRev", show=True)
+    plot_grid_dep("stepsPerRev", show=True)
 #    calc_blade_vel()
-    plot_meanu()
+#    plot_meanu()
 
