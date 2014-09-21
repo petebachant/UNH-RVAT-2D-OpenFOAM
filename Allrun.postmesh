@@ -13,13 +13,7 @@ cp -rf 0.org 0
 
 ./gendynmeshdict.py $1
 
-runApplication decomposePar
-
-runParallel `getApplication` $nProc
-
-runApplication reconstructPar
-
-rm -rf processor*
+runApplication `getApplication`
 
 runApplication vorticity
 mv log.yPlus log.yPlus.0
