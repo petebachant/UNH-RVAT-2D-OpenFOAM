@@ -270,16 +270,20 @@ def plot_grid_dep(var="nx", show=True):
         df = df[np.abs(df.cp) < 1]
         x = df.maxco
         xlab = r"$Co_\max$"
-    elif var == "nx":
+    elif var.lower() == "nx":
         df = pd.read_csv("processed/spatial_grid_dep.csv")
         x = df.nx
         xlab = "$N_x$"
-    elif var=="deltaT":
+    elif var.lower() == "ncells":
+        df = pd.read_csv("processed/spatial_grid_dep.csv")
+        x = df.ncells
+        xlab = "Number of cells"
+    elif var == "deltaT":
         df = pd.read_csv("processed/timestep_dep.csv")
         df = df[np.isnan(df.maxco)]
         x = df.dt
         xlab = r"$\Delta t$"
-    elif var=="stepsPerRev":
+    elif var == "stepsPerRev":
         df = pd.read_csv("processed/timestep_dep.csv")
         tsr = 1.9
         omega = tsr*U_infty/R
