@@ -277,7 +277,7 @@ addLayersControls
     {
         blades
         {
-            nSurfaceLayers 18;
+            nSurfaceLayers 20;
         }
     }
 
