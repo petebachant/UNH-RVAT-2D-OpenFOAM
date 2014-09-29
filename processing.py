@@ -74,6 +74,12 @@ def get_deltat():
     else:
         return "nan"
 
+def get_nlayers():
+    n = foampy.dictionaries.read_single_line_value("snappyHexMeshDict",
+                                                   "nSurfaceLayers",
+                                                   valtype=int)
+    return n
+
 def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
     t, torque, drag = foampy.load_all_torque_drag()
     _t, theta, omega = foampy.load_theta_omega(t_interp=t)
@@ -240,19 +246,21 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
         os.mkdir("processed")
     with open("processed/" + logname, mode) as f:
         if os.stat("processed/" + logname).st_size == 0:
-            f.write("dt,maxco,nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean,ddt_scheme\n")
+            f.write("dt,maxco,nx,ncells,nlayers,tsr,cp,cd,yplus_min,yplus_max,yplus_mean,ddt_scheme\n")
         data = calc_perf(verbose=verbose)
         ncells = get_ncells()
+        nlayers = get_nlayers()
         yplus = get_yplus()
         nx = get_nx()
         maxco = get_max_courant_no()
         dt = get_deltat()
         ddt_scheme = get_ddt_scheme()
-        f.write("{dt},{maxco},{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean},{ddt_scheme}\n"\
+        f.write("{dt},{maxco},{nx},{ncells},{nlayers},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean},{ddt_scheme}\n"\
                 .format(dt=dt,
                         maxco=maxco,
                         nx=nx,
                         ncells=ncells,
+                        nlayers=nlayers,
                         tsr=data["TSR"],
                         cp=data["C_P"],
                         cd=data["C_D"],
