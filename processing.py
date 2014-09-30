@@ -269,7 +269,7 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ypmean=yplus["mean"],
                         ddt_scheme=ddt_scheme))
                         
-def plot_grid_dep(var="nx", show=True):
+def plot_grid_dep(var="nx", show=True, **kwargs):
     if var=="maxCo":
         df = pd.read_csv("processed/maxco_dep.csv")
         df = df[df.nx==95]
@@ -280,6 +280,8 @@ def plot_grid_dep(var="nx", show=True):
         xlab = r"$Co_\max$"
     elif var.lower() == "nx":
         df = pd.read_csv("processed/spatial_grid_dep.csv")
+        if "nlayers" in kwargs:
+            df = df[df.nlayers==kwargs["nlayers"]]
         x = df.nx
         xlab = "$N_x$"
     elif var.lower() == "ncells":
