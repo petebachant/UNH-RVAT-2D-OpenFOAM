@@ -23,7 +23,7 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         6.1;
+endTime         6.0;
 
 deltaT          0.002;
 
@@ -53,10 +53,6 @@ libs
 (
     "libOpenFOAM.so"
     "libforces.so"
-    "libincompressibleRASModels.so"
-    "libgroovyBC.so" 
-    "libsimpleSwakFunctionObjects.so" 
-    "libswakFunctionObjects.so"
 );
 
 functions
