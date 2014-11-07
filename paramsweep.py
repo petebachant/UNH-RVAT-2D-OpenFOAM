@@ -51,7 +51,7 @@ def spatial_grid_dep(newfile=True):
             os.remove("processed/spatial_grid_dep.csv")
         except OSError:
             pass
-    nx_list = [44, 54, 64, 70, 74, 84, 94]
+    nx_list = [42, 48, 58, 68, 78, 88, 98]
     for nx in nx_list:
         call("./Allclean")
         print("Setting blockMesh nX to {}".format(nx))
@@ -104,4 +104,4 @@ def tsr_dep(newfile=True):
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    spatial_grid_dep(newfile=False)
+    timestep_dep(newfile=False)
