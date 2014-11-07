@@ -63,7 +63,7 @@ functions
         functionObjectLibs  ("libforces.so");
         outputControl       timeStep;
         outputInterval      1;
-        patches             (blades shaft);
+        patches             (shaft);
         pName               p;
         UName               U;
         rhoName             rhoInf;

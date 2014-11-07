@@ -17,7 +17,7 @@ FoamFile
 // Which of the steps to run
 castellatedMesh true;
 snap            true;
-addLayers       true;
+addLayers       false;
 
 
 // Geometry. Definition of all surfaces. All surfaces are of class
@@ -33,12 +33,6 @@ geometry
         type searchableBox;
         min (-0.9 -0.9 -0.1);
         max (1.3 0.9 0.1);
-    }
-
-    blades.stl
-    {
-        type        triSurfaceMesh;
-        name        blades;
     }
 
     shaft.stl
@@ -139,10 +133,6 @@ castellatedMeshControls
             faceZone    AMISurface;
             cellZoneInside  inside;
         }
-        blades
-        {
-            level       (6 6);
-        }
         shaft
         {
             level       (4 4);
@@ -174,13 +164,6 @@ castellatedMeshControls
             levels      ((1e15 2));
         }
 
-/*
-        AMISurface
-        {
-            mode        inside;
-            levels      ((1e15 0)); // Was ((1E15 2));
-        }
-*/
     }
 
 

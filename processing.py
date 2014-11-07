@@ -15,7 +15,7 @@ from pxl import fdiff
 
 plt.style.use("fivethirtyeight")
 
-area = 0.05
+area = 0.05*(1/(0.03175*2)) # 0.03175 is the height of one hub
 R = 0.5
 U_infty = 1.0
 rho = 1000.0
@@ -105,9 +105,9 @@ def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
     if verbose:
         print("Performance from {:.1f}--{:.1f} degrees:".format(theta_0, 
                                                                 theta.max()))
-        print("Mean TSR = {:.3f}".format(meantsr))
-        print("Mean C_P = {:.3f}".format(meancp))
-        print("Mean C_D = {:.3f}".format(meancd))
+        print("Mean TSR = {:.4f}".format(meantsr))
+        print("Mean C_P = {:.4f}".format(meancp))
+        print("Mean C_D = {:.4f}".format(meancd))
     if plot:
         plt.close('all')
         plt.plot(theta[5:], cp[5:])
