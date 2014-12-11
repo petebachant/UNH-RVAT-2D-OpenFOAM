@@ -9,7 +9,7 @@
 flowVelocity         (1 0 0); // m/s
 pressure             0;
 turbulentKE          2e-4; // Was 0.375
-turbulentOmega       1.414; // Was 0.887
+turbulentOmega       0.1414; // Was 0.887
 #inputMode           merge
 
 // ************************************************************************* //
