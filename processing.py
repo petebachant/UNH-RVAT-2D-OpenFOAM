@@ -337,7 +337,7 @@ def plot_meanu(t0=5.0, show=True, save=False, savepath="./", savetype=".pdf"):
 
 if __name__ == "__main__":
 #    plot_grid_dep("nx", show=False)
-    plot_grid_dep("stepsPerRev", show=True)
+    plot_grid_dep("deltaT", show=True)
 #    calc_blade_vel()
 #    plot_meanu()
 
