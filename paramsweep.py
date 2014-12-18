@@ -90,7 +90,7 @@ def maxco_dep(newfile=True):
         processing.log_perf("maxco_dep.csv", verbose=False)
 
 def tsr_dep(newfile=True):
-    set_timestep(0.001)
+    set_timestep(0.002)
     set_blockmesh_resolution(70)
     if newfile:
         try:
