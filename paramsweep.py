@@ -90,12 +90,14 @@ def maxco_dep(newfile=True):
         processing.log_perf("maxco_dep.csv", verbose=False)
 
 def tsr_dep(newfile=True):
+    set_timestep(0.001)
+    set_blockmesh_resolution(70)
     if newfile:
         try:
             os.remove("processed/tsr_dep.csv")
         except OSError:
             pass
-    tsr_list = [3.5, 3.0, 2.5, 2.0, 1.5, 1.0]
+    tsr_list = [3.25, 2.75, 2.25, 1.75, 1.25, 0.75, 0.5]
     call("./Allrun.pre")
     for tsr in tsr_list:
         call("./Allclean.nomesh")
@@ -104,4 +106,6 @@ def tsr_dep(newfile=True):
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    timestep_dep(newfile=False)
+#    timestep_dep(newfile=False)
+    tsr_dep(newfile=False)
+
