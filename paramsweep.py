@@ -106,6 +106,6 @@ def tsr_dep(newfile=True):
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-#    timestep_dep(newfile=False)
+#    timestep_dep(newfile=True)
     tsr_dep(newfile=False)
 
