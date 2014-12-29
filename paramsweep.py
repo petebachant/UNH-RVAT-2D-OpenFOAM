@@ -97,7 +97,7 @@ def tsr_dep(newfile=True):
             os.remove("processed/tsr_dep.csv")
         except OSError:
             pass
-    tsr_list = [3.25, 2.75, 2.25, 1.75, 1.25, 0.75, 0.5]
+    tsr_list = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5]
     call("./Allrun.pre")
     for tsr in tsr_list:
         call("./Allclean.nomesh")
