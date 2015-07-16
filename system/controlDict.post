@@ -69,7 +69,6 @@ functions
 
         type            readAndUpdateFields;
         fields          (U p);
-        verbose true;
     }
 
     #include "expressionFields"
