@@ -52,27 +52,27 @@ maxCo           25;
 libs
 (
     "libOpenFOAM.so"
-    "libforces.so"
+    "libsimpleFunctionObjects.so"
+    "libsimpleSwakFunctionObjects.so"
+    "libswakFunctionObjects.so"
 );
 
 functions
 {
-    forces
+    readFields
     {
-        type                forces;
-        functionObjectLibs  ("libforces.so");
-        outputControl       timeStep;
-        outputInterval      1;
-        patches             (blades shaft);
-        pName               p;
-        UName               U;
-        rhoName             rhoInf;
-        log                 true;
-        rhoInf              1000.0;
-        CofR                (0 0 0);
+        // Where to load it from (if not already in solver)
+        functionObjectLibs 
+        (
+            "libsimpleSwakFunctionObjects.so"
+        );
+
+        type            readAndUpdateFields;
+        fields          (U p);
+        verbose true;
     }
-    
-    // #include "expressionFields"
+
+    #include "expressionFields"
 }
 
 // ************************************************************************* //

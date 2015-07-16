@@ -11,9 +11,9 @@ import foampy
 import sys
 import os
 import pandas as pd
-from pxl import fdiff
+from pxl import styleplot, fdiff
+from subprocess import call
 
-plt.style.use("fivethirtyeight")
 
 area = 0.05
 R = 0.5
@@ -348,8 +348,112 @@ def plot_meanu(t0=5.0, show=True, save=False, savepath="./", savetype=".pdf"):
     plt.tight_layout()
     if show:
         plt.show()
+        
+def set_funky_plane(x=1.0):
+    foampy.dictionaries.replace_value("system/funkyDoCalcDict", "basePoint", 
+                                      "({}".format(x))
+
+def read_funky_log():
+    with open("log.funkyDoCalc") as f:
+        for line in f.readlines():
+            try:
+                line = line.replace("=", " ")
+                line = line.split()
+                if line[0] == "planeAverageAdvectionY":
+                    y_adv = float(line[-1])
+                elif line[0] == "weightedAverage":
+                    z_adv = float(line[-1])
+                elif line[0] == "planeAverageTurbTrans":
+                    turb_trans = float(line[-1])
+                elif line[0] == "planeAverageViscTrans":
+                    visc_trans = float(line[-1])
+                elif line[0] == "planeAveragePressureGradient":
+                    pressure_trans = float(line[-1])
+            except IndexError:
+                pass
+    return {"y_adv" : y_adv, "z_adv" : z_adv, "turb_trans" : turb_trans,
+            "visc_trans" : visc_trans, "pressure_trans" : pressure_trans}
+
+def run_funky_batch():
+    xlist = [-1.99, -1.5, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 
+             1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 7.99]
+    df = pd.DataFrame()
+    for x in xlist:
+        print("Setting measurement plane to x =", x)
+        set_funky_plane(x)
+        call(["./Allrun.post"])
+        dfi = pd.DataFrame(read_funky_log(), index=[x])
+        df = df.append(dfi)
+    if not os.path.isdir("processed"):
+        os.mkdir("processed")
+    df.index.name = "x"
+    print(df)
+    df.to_csv("processed/mom_transport.csv", index_label="x")
+
+def make_momentum_trans_bargraph(print_analysis=True):
+    data = read_funky_log()
+    y_adv = data["y_adv"]
+    z_adv = data["z_adv"]
+    turb_trans = data["turb_trans"]
+    visc_trans = data["visc_trans"]
+    pressure_trans = data["pressure_trans"]
+    plt.figure(figsize=(6,4))
+    ax = plt.gca()
+    ax.bar(range(5), [y_adv, z_adv, turb_trans, visc_trans, pressure_trans], 
+           color="gray", edgecolor="black", hatch="//", width=0.5)
+    ax.set_xticks(np.arange(5)+0.25)
+    ax.set_xticklabels(["$y$-adv.", "$z$-adv.",
+                        "Turb.", "Visc.", "Press."])
+    plt.ylabel(r"$\frac{U \, \mathrm{ transport}}{UDU_\infty}$")
+    plt.tight_layout()
+    if print_analysis:
+        sum = y_adv + z_adv + turb_trans + visc_trans + pressure_trans
+        print("Momentum recovery = {:.3f}% per turbine diameter".format(sum))
+    plt.show()
+
+def plot_mom_transport(show=True):
+    df = pd.read_csv("processed/mom_transport.csv")
+    print(df)
+    plt.plot(df.x, df.y_adv, "-o", label=r"$-V \partial U / \partial y$")
+    plt.plot(df.x, df.z_adv, "-s", label=r"$-W \partial U / \partial z$")
+    plt.plot(df.x, df.turb_trans, "-^", label=r"$\nu_t \nabla^2 U$")
+    plt.plot(df.x, df.visc_trans, "->", label=r"$\nu \nabla^2 U$")
+    plt.plot(df.x, df.pressure_trans/10, "-<", label=r"$-\partial P / \partial x$ ($\times 10^{-1}$)")
+    plt.legend(loc=4)
+    plt.xlabel("$x/D$")
+    plt.ylabel(r"$\frac{U \, \mathrm{ transport}}{UU_\infty D^{-1}}$")
+    plt.grid()
+    plt.tight_layout()
+    if show:
+        plt.show()
+
+def plot_U_streamwise(show=True):
+    times = os.listdir("postProcessing/sets")
+    times.sort()
+    latest = times[-1]
+    filepath = os.path.join("postProcessing", "sets", latest, 
+                            "streamwise_U.xy")
+    x, u, v, w = np.loadtxt(filepath, unpack=True)
+    plt.plot(x, u, "k")
+    plt.xlabel("$x/D$")
+    plt.ylabel(r"$U/U_\infty$")
+    plt.grid()
+    plt.tight_layout()
+    if show:
+        plt.show()
+
+def plot_streamwise(save=False, savepath=""):
+    plt.figure(figsize=(12,5))
+    plt.subplot(121)
+    plot_U_streamwise(show=False)
+    plt.subplot(122)
+    plot_mom_transport(show=False)
+    if save:
+        plt.savefig(os.path.join(savepath, "AD_streamwise.pdf"))
+    plt.show()
 
 if __name__ == "__main__":
+    styleplot.set_sns()
 #    plot_grid_dep("nx", show=False)
     plot_grid_dep("stepsPerRev", show=True)
 #    calc_blade_vel()
