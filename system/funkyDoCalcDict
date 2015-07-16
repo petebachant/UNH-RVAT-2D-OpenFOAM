@@ -76,7 +76,7 @@ planeAveragePressureGradient
     valueType surface;
     surfaceName testPlane;
     verbose true;
-    expression "-gradP.x/U.x";
+    expression "-gradPx/U.x";
     accumulations (weightedAverage);
 }
 

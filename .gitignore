@@ -28,3 +28,4 @@ constant/dynamicMeshDict
 *.OpenFOAM
 constant/triSurface/blades.stl
 __pycache__/
+dynamicCode
