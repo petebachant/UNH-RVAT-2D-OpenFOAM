@@ -20,7 +20,8 @@ FoamFile
         functionObjectLibs ("libfieldFunctionObjects.so");
         enabled         true;
         outputControl   outputTime;
-        purgeWrite      1;
+        resetOnRestart  false;
+        resetOnOutput   false;
 
         fields
         (
