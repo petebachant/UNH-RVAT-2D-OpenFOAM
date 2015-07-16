@@ -21,6 +21,6 @@ runApplication vorticity
 
 # python -c "import processing; processing.log_perf()"
 
-python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
+# python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 
 notify-send "OpenFOAM" "Simulation finished."
