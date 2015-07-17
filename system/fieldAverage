@@ -11,7 +11,10 @@
         type            fieldAverage;
         functionObjectLibs ("libfieldFunctionObjects.so");
         enabled         true;
-        outputControl   outputTime;
+        outputControl   runTime;
+        writeInterval   6.0;
+        timeStart       3.0;
+        timeEnd         10.0;
         resetOnRestart  false;
         resetOnOutput   false;
 
