@@ -17,7 +17,7 @@
         outputControl outputTime;
         fieldName gradP;
         dimension [1 -2 -2 0 0 0 0];
-        expression "grad(p)";
+        expression "grad(pMean)";
         autowrite true;        
     }
 
@@ -29,9 +29,9 @@
             "libswakFunctionObjects.so"
         );
         outputControl outputTime;
-        fieldName gradUx;
+        fieldName gradUMeanx;
         dimension [0 0 -1 0 0 0 0];
-        expression "grad(U.x)";
+        expression "grad(UMean.x)";
         autowrite true;        
     }
 
@@ -43,8 +43,8 @@
             "libswakFunctionObjects.so"
         );
         outputControl outputTime;
-        fieldName laplacianUx;
+        fieldName laplacianUMeanx;
         dimension [0 -1 -1 0 0 0 0];
-        expression "laplacian(U.x)";
+        expression "laplacian(UMean.x)";
         autowrite true;        
     }

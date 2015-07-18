@@ -15,5 +15,5 @@
         );
 
         type            readAndUpdateFields;
-        fields          (U p);
+        fields          (UMean pMean);
     }

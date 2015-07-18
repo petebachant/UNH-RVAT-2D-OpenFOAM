@@ -52,17 +52,11 @@ maxCo           25;
 libs
 (
     "libOpenFOAM.so"
-    "libsimpleFunctionObjects.so"
-    "libsimpleSwakFunctionObjects.so"
-    "libswakFunctionObjects.so"
 );
 
 functions
 {
-    #include "recoveryTerms"
-//    #include "swakReadFields"
-//    #include "expressionFields"
-//    #include "fieldAverage"
+    #include "fieldAverage"
 }
 
 // ************************************************************************* //

@@ -23,12 +23,12 @@ planeAverageAdvectionZ
     surfaceName testPlane;
     surface {
         type plane;
-        basePoint (1.0 0.0 0.0);
+        basePoint (2.0 0.0 0.0);
         normalVector (1 0 0);
         interpolate true;
     };
     verbose true;
-    expression "-U.z/U.x*gradUx.z";
+    expression "-UMean.z/UMean.x*gradUMeanx.z";
     accumulations (weightedAverage);
 }
 
@@ -40,7 +40,7 @@ planeAverageAdvectionY
     valueType surface;
     surfaceName testPlane;
     verbose true;
-    expression "-U.y/U.x*gradUx.y";
+    expression "-UMean.y/UMean.x*gradUMeanx.y";
     accumulations (weightedAverage);
 }
 
@@ -52,7 +52,7 @@ planeAverageTurbTrans
     valueType surface;
     surfaceName testPlane;
     verbose true;
-    expression "1/U.x*nut*laplacianUx";
+    expression "1.0/UMean.x*nutMean*laplacianUMeanx";
     accumulations (weightedAverage);
 }
 
@@ -64,7 +64,7 @@ planeAverageViscTrans
     valueType surface;
     surfaceName testPlane;
     verbose true;
-    expression "1/U.x*1e-6*laplacianUx";
+    expression "1.0/UMean.x*1e-6*laplacianUMeanx";
     accumulations (weightedAverage);
 }
 
@@ -76,7 +76,7 @@ planeAveragePressureGradient
     valueType surface;
     surfaceName testPlane;
     verbose true;
-    expression "-gradPx/U.x";
+    expression "-gradPMeanx/UMean.x";
     accumulations (weightedAverage);
 }
 
@@ -88,7 +88,7 @@ planeAverageUx
     valueType surface;
     surfaceName testPlane;
     verbose true;
-    expression "U.x";
+    expression "UMean.x";
     accumulations (weightedAverage);
 }
 

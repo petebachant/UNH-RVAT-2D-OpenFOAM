@@ -14,7 +14,7 @@ readFields
     functionObjectLibs ("libfieldFunctionObjects.so");
 
     type            readFields;
-    fields          (p U k);
+    fields          (pMean UMean kMean);
 }
 
 
