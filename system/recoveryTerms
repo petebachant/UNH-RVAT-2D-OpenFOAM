@@ -17,17 +17,17 @@
         #{
             const volVectorField& UMean
                 = mesh().lookupObject<volVectorField>("UMean");
-            const volScalarField UMeanx = UMean.component(0);
+            const volScalarField UMeanX = UMean.component(0);
             const volScalarField& pMean
                 = mesh().lookupObject<volScalarField>("pMean");
             
             volVectorField gradPMean = fvc::grad(pMean);
             
-            volScalarField gradPMeanx
+            volScalarField gradPMeanX
             (
                 IOobject
                 (
-                    "gradPMeanx",
+                    "gradPMeanX",
                     mesh().time().timeName(),
                     mesh(),
                     IOobject::NO_READ,
@@ -36,35 +36,35 @@
                 gradPMean.component(0)
             );
             
-            volVectorField gradUMeanx
+            volVectorField gradUMeanX
             (
                 IOobject
                 (
-                    "gradUMeanx",
+                    "gradUMeanX",
                     mesh().time().timeName(),
                     mesh(),
                     IOobject::NO_READ,
                     IOobject::AUTO_WRITE
                 ),
-                fvc::grad(UMeanx)
+                fvc::grad(UMeanX)
             );
 
-            volScalarField laplacianUMeanx
+            volScalarField laplacianUMeanX
             (
                 IOobject
                 (
-                    "laplacianUMeanx",
+                    "laplacianUMeanX",
                     mesh().time().timeName(),
                     mesh(),
                     IOobject::NO_READ,
                     IOobject::AUTO_WRITE
                 ),
-                fvc::laplacian(UMeanx)
+                fvc::laplacian(UMeanX)
             );
 
-            gradPMeanx.write();
-            gradUMeanx.write();
-            laplacianUMeanx.write();
+            gradPMeanX.write();
+            gradUMeanX.write();
+            laplacianUMeanX.write();
         #};
     }
 
