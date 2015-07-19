@@ -105,10 +105,8 @@ def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
     if plot:
         plt.close('all')
         plt.plot(theta[5:], cp[5:])
-        plt.title(r"$\lambda = %1.1f$" %meantsr)
         plt.xlabel(r"$\theta$ (degrees)")
         plt.ylabel(r"$C_P$")
-        #plt.ylim((0, 1.0))
         plt.tight_layout()
         plt.show()
     if reached_theta_0:
