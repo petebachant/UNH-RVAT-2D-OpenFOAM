@@ -1,6 +1,6 @@
 #!/bin/sh
 
-execFlowFunctionObjects -dict system/controlDict.average -time 3: | tee log.fieldAverage
+scripts/timeAverage
 execFlowFunctionObjects -dict system/controlDict.recovery -latestTime | tee log.recovery
 sample -latestTime | tee log.sample
 funkyDoCalc system/funkyDoCalcDict -latestTime | tee log.funkyDoCalc
