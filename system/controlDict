@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.4.x                                 |
+|  \\    /   O peration     | Version:  2.3.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -23,13 +23,13 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         10.0; // 6.05 revs
+endTime         6.0;
 
-deltaT          0.001;
+deltaT          0.0007;
 
-writeControl    runTime;
+writeControl    adjustableRunTime;
 
-writeInterval   0.02;
+writeInterval   0.05;
 
 purgeWrite      0;
 
@@ -53,6 +53,7 @@ libs
 (
     "libOpenFOAM.so"
     "libforces.so"
+//  "libmyIncompressibleRASModels.so"
 );
 
 functions
@@ -62,17 +63,15 @@ functions
         type                forces;
         functionObjectLibs  ("libforces.so");
         outputControl       timeStep;
-        outputInterval      1;
+        outputInterval      1; // 10;
         patches             (blades shaft);
         pName               p;
         UName               U;
         rhoName             rhoInf;
         log                 true;
         rhoInf              1000.0;
-        CofR                (0 0 0);
+        CofR                (0 0 0); // (0.25 0.007 0.125);
     }
-
-    // #include "fieldAverage"
 }
 
 // ************************************************************************* //
