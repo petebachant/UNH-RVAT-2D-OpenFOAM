@@ -13,13 +13,13 @@ cp -rf 0.org 0
 
 ./gendynmeshdict.py $1
 
-runApplication `getApplication`
+pimpleDyMFoam | tee log.pimpleDyMFoam
 
 runApplication vorticity
-mv log.yPlus log.yPlus.0
-runApplication yPlus -latestTime
+# mv log.yPlus log.yPlus.0
+# runApplication yPlus -latestTime
 
-python -c "import processing; processing.log_perf()"
+# python -c "import processing; processing.log_perf()"
 
 python "/home/pete/Google Drive/Python/OpenFOAM/send_email.py"
 
