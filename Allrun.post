@@ -1,6 +1,10 @@
 #!/bin/sh
 
-scripts/timeAverage
+if [ ! -f 9.98/UMean.gz ]
+then
+    scripts/timeAverage
+fi
+
 execFlowFunctionObjects -dict system/controlDict.recovery -latestTime | tee log.recovery
 sample -latestTime | tee log.sample
 funkyDoCalc system/funkyDoCalcDict -latestTime | tee log.funkyDoCalc
