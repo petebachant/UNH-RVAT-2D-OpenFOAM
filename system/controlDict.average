@@ -17,15 +17,15 @@ FoamFile
 
 application     pimpleDyMFoam;
 
-startFrom       latestTime;
+startFrom       startTime;
 
-startTime       0;
+startTime       3.0;
 
 stopAt          endTime;
 
-endTime         10.0; // 6.05 revs
+endTime         6.0;
 
-deltaT          0.001;
+deltaT          0.02;
 
 writeControl    runTime;
 
@@ -52,27 +52,11 @@ maxCo           25;
 libs
 (
     "libOpenFOAM.so"
-    "libforces.so"
 );
 
 functions
 {
-    forces
-    {
-        type                forces;
-        functionObjectLibs  ("libforces.so");
-        outputControl       timeStep;
-        outputInterval      1;
-        patches             (blades shaft);
-        pName               p;
-        UName               U;
-        rhoName             rhoInf;
-        log                 true;
-        rhoInf              1000.0;
-        CofR                (0 0 0);
-    }
-
-    // #include "fieldAverage"
+    #include "fieldAverage"
 }
 
 // ************************************************************************* //
