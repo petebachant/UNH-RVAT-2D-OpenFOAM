@@ -173,14 +173,6 @@ castellatedMeshControls
             mode        inside;
             levels      ((1e15 2));
         }
-
-/*
-        AMISurface
-        {
-            mode        inside;
-            levels      ((1e15 0)); // Was ((1E15 2));
-        }
-*/
     }
 
 
@@ -277,7 +269,7 @@ addLayersControls
     {
         blades
         {
-            nSurfaceLayers 18;
+            nSurfaceLayers 20;
         }
     }
 
