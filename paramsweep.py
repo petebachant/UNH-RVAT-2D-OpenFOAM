@@ -65,13 +65,13 @@ def timestep_dep(newfile=True):
             os.remove("processed/timestep_dep.csv")
         except OSError:
             pass
-    dt_list = [0.004, 0.003, 0.0025, 0.002, 0.0015, 0.001, 9e-4, 8e-4, 7e-4]
-    call("./Allrun.pre")
+    dt_list = [0.004, 0.003, 0.0025, 0.002, 0.0015, 0.00125, 0.001, 9e-4, 8e-4, 7e-4]
+    call("scripts/Allrun.pre")
     for dt in dt_list:
-        call("./Allclean.nomesh")
+        call("scripts/Allclean.nomesh")
         print("Setting timestep to {}".format(dt))
         set_timestep(dt)
-        call("./Allrun.postmesh")
+        call("scripts/Allrun.postmesh")
         processing.log_perf("timestep_dep.csv", verbose=False)
         
 def maxco_dep(newfile=True):
@@ -106,6 +106,6 @@ def tsr_dep(newfile=True):
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-#    timestep_dep(newfile=False)
-    tsr_dep(newfile=False)
+    timestep_dep(newfile=True)
+#    tsr_dep(newfile=False)
     
