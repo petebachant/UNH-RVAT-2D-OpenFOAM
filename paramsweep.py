@@ -81,12 +81,12 @@ def maxco_dep(newfile=True):
         except OSError:
             pass
     maxco_list = [40, 20, 10, 5, 2, 0.9, 0.5]
-    call("./Allrun.pre")
+    call("scripts/Allrun.pre")
     for maxco in maxco_list:
-        call("./Allclean.nomesh")
+        call("scripts/Allclean.nomesh")
         print("Setting maxCo to {}".format(maxco))
         set_maxco(maxco)
-        call("./Allrun.postmesh")
+        call("scripts/Allrun.postmesh")
         processing.log_perf("maxco_dep.csv", verbose=False)
 
 def tsr_dep(newfile=True):
@@ -98,11 +98,11 @@ def tsr_dep(newfile=True):
         except OSError:
             pass
     tsr_list = [3.25, 2.75, 2.25, 1.75, 1.25, 0.75, 0.5]
-    call("./Allrun.pre")
+    call("scripts/Allrun.pre")
     for tsr in tsr_list:
-        call("./Allclean.nomesh")
+        call("scripts/Allclean.nomesh")
         print("Setting tip speed ratio to {}".format(tsr))
-        call("./Allrun.postmesh {}".format(tsr), shell=True)
+        call("scripts/Allrun.postmesh {}".format(tsr), shell=True)
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
