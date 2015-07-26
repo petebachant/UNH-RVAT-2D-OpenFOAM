@@ -45,13 +45,12 @@ def set_maxco(maxco):
     maxco = str(maxco)
     foampy.dictionaries.replace_value("system/controlDict", "maxCo", maxco)
 
-def spatial_grid_dep(newfile=True):
+def spatial_grid_dep(newfile=True, nx_list=range(50, 95, 5)):
     if newfile:
         try:
             os.remove("processed/spatial_grid_dep.csv")
         except OSError:
             pass
-    nx_list = [92]
     for nx in nx_list:
         call("./Allclean")
         print("Setting blockMesh nX to {}".format(nx))
@@ -106,6 +105,7 @@ def tsr_dep(newfile=True):
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    timestep_dep(newfile=True)
+    spatial_grid_dep(newfile=True)
+#    timestep_dep(newfile=True)
 #    tsr_dep(newfile=False)
     
