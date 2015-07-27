@@ -45,7 +45,7 @@ def set_maxco(maxco):
     maxco = str(maxco)
     foampy.dictionaries.replace_value("system/controlDict", "maxCo", maxco)
 
-def spatial_grid_dep(newfile=True, nx_list=range(50, 95, 5)):
+def spatial_grid_dep(newfile=True, nx_list=range(30, 95, 5)):
     if newfile:
         try:
             os.remove("processed/spatial_grid_dep.csv")
