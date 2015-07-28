@@ -8,10 +8,9 @@ from __future__ import division, print_function
 import matplotlib.pyplot as plt
 import numpy as np 
 import foampy
-import sys
 import os
 import pandas as pd
-from pxl import styleplot, fdiff
+from pxl import fdiff
 from subprocess import call
 
 
@@ -36,7 +35,6 @@ def get_yplus(logname="log.yPlus"):
         for n in range(len(lines)):
             ls = lines[n].split()
             if ls and ls[-1] == "blades":
-                nstart = n
                 break
     line = lines[n+3]
     line = line.split()
