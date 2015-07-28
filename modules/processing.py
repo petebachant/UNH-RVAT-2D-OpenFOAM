@@ -274,6 +274,28 @@ def load_u_profile():
     df["y_R"] = data[0]/R
     df["u"] = data[1]
     return df
+    
+def load_k_profile():
+    """
+    Loads data from the sampled `UPrime2Mean` and `kMean` (if available) and
+    returns it as a pandas `DataFrame`.
+    """
+    df = pd.DataFrame()
+    timedirs = os.listdir("postProcessing/sets")
+    latest_time = max(timedirs)
+    data = np.loadtxt(os.path.join("postProcessing", "sets", latest_time,
+                      "profile_UPrime2Mean.xy"), unpack=True)
+    df["y_R"] = data[0]/R
+    df["k_resolved"] = 0.5*(data[1] + data[4] + data[6])
+    try:
+        data = np.loadtxt(os.path.join("postProcessing", "sets", latest_time,
+                          "profile_kMean.xy"), unpack=True)
+        df["k_modeled"] = data[1]
+        df["k_total"] = df.k_modeled + df.k_resolved
+    except FileNotFoundError:
+        df["k_modeled"] = np.zeros(len(df.y_R))*np.nan
+        df["k_total"] = df.k_resolved
+    return df
         
 def set_funky_plane(x=1.0):
     foampy.dictionaries.replace_value("system/funkyDoCalcDict", "basePoint", 
