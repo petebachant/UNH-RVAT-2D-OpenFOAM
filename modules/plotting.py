@@ -72,15 +72,10 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
 
 def plot_u(newfig=True, save=False, savedir="figures", savetype=".pdf"):
     """Plot mean streamwise velocity profile."""
-    timedirs = os.listdir("postProcessing/sets")
-    latest_time = max(timedirs)
-    data = np.loadtxt(os.path.join("postProcessing", "sets", latest_time,
-                      "profile_UMean.xy"), unpack=True)
-    u = data[1]
-    y_R = data[0]/R
+    df = load_u_profile()
     if newfig:
         plt.figure()
-    plt.plot(y_R, u, "k", label="SA (2-D)")
+    plt.plot(df.y_R, df.u, "k", label="SA (2-D)")
     plt.xlabel(r"$y/R$")
     plt.ylabel(r"$U$")
     plt.grid(True)
