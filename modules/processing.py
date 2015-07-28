@@ -11,7 +11,9 @@ import foampy
 import sys
 import os
 import pandas as pd
-from pxl import fdiff
+from pxl import styleplot, fdiff
+from subprocess import call
+
 
 area = 0.05
 R = 0.5
@@ -71,6 +73,12 @@ def get_deltat():
                                                           "deltaT")
     else:
         return "nan"
+
+def get_nlayers():
+    n = foampy.dictionaries.read_single_line_value("snappyHexMeshDict",
+                                                   "nSurfaceLayers",
+                                                   valtype=int)
+    return n
 
 def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
     t, torque, drag = foampy.load_all_torque_drag()
@@ -232,19 +240,21 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
         os.mkdir("processed")
     with open("processed/" + logname, mode) as f:
         if os.stat("processed/" + logname).st_size == 0:
-            f.write("dt,maxco,nx,ncells,tsr,cp,cd,yplus_min,yplus_max,yplus_mean,ddt_scheme\n")
+            f.write("dt,maxco,nx,ncells,nlayers,tsr,cp,cd,yplus_min,yplus_max,yplus_mean,ddt_scheme\n")
         data = calc_perf(verbose=verbose)
         ncells = get_ncells()
+        nlayers = get_nlayers()
         yplus = get_yplus()
         nx = get_nx()
         maxco = get_max_courant_no()
         dt = get_deltat()
         ddt_scheme = get_ddt_scheme()
-        f.write("{dt},{maxco},{nx},{ncells},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean},{ddt_scheme}\n"\
+        f.write("{dt},{maxco},{nx},{ncells},{nlayers},{tsr},{cp},{cd},{ypmin},{ypmax},{ypmean},{ddt_scheme}\n"\
                 .format(dt=dt,
                         maxco=maxco,
                         nx=nx,
                         ncells=ncells,
+                        nlayers=nlayers,
                         tsr=data["TSR"],
                         cp=data["C_P"],
                         cd=data["C_D"],
@@ -252,8 +262,45 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ypmax=yplus["max"],
                         ypmean=yplus["mean"],
                         ddt_scheme=ddt_scheme))
+        
+def set_funky_plane(x=1.0):
+    foampy.dictionaries.replace_value("system/funkyDoCalcDict", "basePoint", 
+                                      "({}".format(x))
 
+def read_funky_log():
+    with open("log.funkyDoCalc") as f:
+        for line in f.readlines():
+            try:
+                line = line.replace("=", " ")
+                line = line.split()
+                if line[0] == "planeAverageAdvectionY":
+                    y_adv = float(line[-1])
+                elif line[0] == "weightedAverage":
+                    z_adv = float(line[-1])
+                elif line[0] == "planeAverageTurbTrans":
+                    turb_trans = float(line[-1])
+                elif line[0] == "planeAverageViscTrans":
+                    visc_trans = float(line[-1])
+                elif line[0] == "planeAveragePressureGradient":
+                    pressure_trans = float(line[-1])
+            except IndexError:
+                pass
+    return {"y_adv" : y_adv, "z_adv" : z_adv, "turb_trans" : turb_trans,
+            "visc_trans" : visc_trans, "pressure_trans" : pressure_trans}
 
-if __name__ == "__main__":
-    pass
+def run_funky_batch():
+    xlist = [-1.99, -1.5, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 
+             1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 7.99]
+    df = pd.DataFrame()
+    for x in xlist:
+        print("Setting measurement plane to x =", x)
+        set_funky_plane(x)
+        call(["./Allrun.post"])
+        dfi = pd.DataFrame(read_funky_log(), index=[x])
+        df = df.append(dfi)
+    if not os.path.isdir("processed"):
+        os.mkdir("processed")
+    df.index.name = "x"
+    print(df)
+    df.to_csv("processed/mom_transport.csv", index_label="x")
 

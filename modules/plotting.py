@@ -120,4 +120,64 @@ def plot_k(amount="total", newfig=True, save=False):
         plt.savefig(os.path.join(savedir, "k_{}_profile_SA{}".format(
                 amount, savetype)))
           
+def make_momentum_trans_bargraph(print_analysis=True):
+    data = read_funky_log()
+    y_adv = data["y_adv"]
+    z_adv = data["z_adv"]
+    turb_trans = data["turb_trans"]
+    visc_trans = data["visc_trans"]
+    pressure_trans = data["pressure_trans"]
+    plt.figure(figsize=(6,4))
+    ax = plt.gca()
+    ax.bar(range(5), [y_adv, z_adv, turb_trans, visc_trans, pressure_trans], 
+           color="gray", edgecolor="black", hatch="//", width=0.5)
+    ax.set_xticks(np.arange(5)+0.25)
+    ax.set_xticklabels(["$y$-adv.", "$z$-adv.",
+                        "Turb.", "Visc.", "Press."])
+    plt.ylabel(r"$\frac{U \, \mathrm{ transport}}{UDU_\infty}$")
+    plt.tight_layout()
+    if print_analysis:
+        sum = y_adv + z_adv + turb_trans + visc_trans + pressure_trans
+        print("Momentum recovery = {:.3f}% per turbine diameter".format(sum))
+    plt.show()
 
+def plot_mom_transport(show=True):
+    df = pd.read_csv("processed/mom_transport.csv")
+    print(df)
+    plt.plot(df.x, df.y_adv, "-o", label=r"$-V \partial U / \partial y$")
+    plt.plot(df.x, df.z_adv, "-s", label=r"$-W \partial U / \partial z$")
+    plt.plot(df.x, df.turb_trans, "-^", label=r"$\nu_t \nabla^2 U$")
+    plt.plot(df.x, df.visc_trans, "->", label=r"$\nu \nabla^2 U$")
+    plt.plot(df.x, df.pressure_trans/10, "-<", label=r"$-\partial P / \partial x$ ($\times 10^{-1}$)")
+    plt.legend(loc=4)
+    plt.xlabel("$x/D$")
+    plt.ylabel(r"$\frac{U \, \mathrm{ transport}}{UU_\infty D^{-1}}$")
+    plt.grid()
+    plt.tight_layout()
+    if show:
+        plt.show()
+
+def plot_U_streamwise(show=True):
+    times = os.listdir("postProcessing/sets")
+    times.sort()
+    latest = times[-1]
+    filepath = os.path.join("postProcessing", "sets", latest, 
+                            "streamwise_U.xy")
+    x, u, v, w = np.loadtxt(filepath, unpack=True)
+    plt.plot(x, u, "k")
+    plt.xlabel("$x/D$")
+    plt.ylabel(r"$U/U_\infty$")
+    plt.grid()
+    plt.tight_layout()
+    if show:
+        plt.show()
+
+def plot_streamwise(save=False, savepath=""):
+    plt.figure(figsize=(12,5))
+    plt.subplot(121)
+    plot_U_streamwise(show=False)
+    plt.subplot(122)
+    plot_mom_transport(show=False)
+    if save:
+        plt.savefig(os.path.join(savepath, "AD_streamwise.pdf"))
+    plt.show()
