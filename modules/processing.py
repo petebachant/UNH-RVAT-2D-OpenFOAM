@@ -109,12 +109,11 @@ def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
         print("Mean C_P = {:.3f}".format(meancp))
         print("Mean C_D = {:.3f}".format(meancd))
     if plot:
-        plt.close('all')
+        plt.figure()
         plt.plot(theta[5:], cp[5:])
         plt.xlabel(r"$\theta$ (degrees)")
         plt.ylabel(r"$C_P$")
         plt.tight_layout()
-        plt.show()
     if reached_theta_0:
         return {"C_P" : meancp, 
                 "C_D" : meancd, 
@@ -123,9 +122,6 @@ def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
         return {"C_P" : "nan", 
                 "C_D" : "nan", 
                 "TSR" : "nan"}
-
-def plot_perf():
-    calc_perf(plot=True)
                 
 def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
     """Imports text data created with the OpenFOAM sample utility"""
@@ -266,86 +262,6 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ypmax=yplus["max"],
                         ypmean=yplus["mean"],
                         ddt_scheme=ddt_scheme))
-                        
-def plot_grid_dep(var="nx", show=True, **kwargs):
-    if var=="maxCo":
-        df = pd.read_csv("processed/maxco_dep.csv")
-        df = df[df.nx==95]
-        df = df[~np.isnan(df.maxco)]
-        df = df[df.ddt_scheme=="Euler"]
-        df = df[np.abs(df.cp) < 1]
-        x = df.maxco
-        xlab = r"$Co_\max$"
-    elif var.lower() == "nx":
-        df = pd.read_csv("processed/spatial_grid_dep.csv")
-        if "nlayers" in kwargs:
-            df = df[df.nlayers==kwargs["nlayers"]]
-        x = df.nx
-        xlab = "$N_x$"
-    elif var.lower() == "ncells":
-        df = pd.read_csv("processed/spatial_grid_dep.csv")
-        x = df.ncells
-        xlab = "Number of cells"
-    elif var == "deltaT":
-        df = pd.read_csv("processed/timestep_dep.csv")
-        df = df[np.isnan(df.maxco)]
-        x = df.dt
-        xlab = r"$\Delta t$"
-    elif var == "stepsPerRev":
-        df = pd.read_csv("processed/timestep_dep.csv")
-        tsr = 1.9
-        omega = tsr*U_infty/R
-        rev_per_sec = omega/(2*np.pi)
-        df = df[np.isnan(df.maxco)]
-        sec_per_step = df.dt
-        step_per_rev = sec_per_step**(-1)*rev_per_sec**(-1)
-        df["steps_per_rev"] = step_per_rev
-        x = step_per_rev
-        xlab = "Steps per revolution"
-    print(df)
-    plt.figure()
-    plt.plot(x, df.cp, "ok")
-    plt.xlabel(xlab, fontsize=16)
-    plt.ylabel("$C_P$", fontsize=16)
-    plt.tight_layout()
-    if show:
-        plt.show()
-        
-def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
-    """Plots the performance curve read from processed/tsr_dep.csv."""
-    df = pd.read_csv("processed/tsr_dep.csv")
-    plt.figure(figsize=(8,3))
-    plt.subplot(1, 2, 1)
-    plt.plot(df.tsr, df.cp, "ok")
-    plt.xlim((0,None))
-    plt.xlabel(r"$\lambda$", fontsize=16)
-    plt.ylabel(r"$C_P$", fontsize=16)
-    plt.subplot(1, 2, 2)
-    plt.plot(df.tsr, df.cd, "ok")
-    plt.xlim((0,None))
-    plt.ylim((0,2))
-    plt.xlabel(r"$\lambda$", fontsize=16)
-    plt.ylabel(r"$C_D$", fontsize=16)
-    plt.tight_layout()
-    if save:
-        plt.savefig(os.path.join(savepath, "perf_curves") + savetype)
-    if show:
-        plt.show()
-
-def plot_meanu(t0=5.0, show=True, save=False, savepath="./", savetype=".pdf"):
-    data = foampy.load_sample_xy(profile="U")
-    t = data["t"]
-    u = data["u"]
-    y_R = data["y"]/R
-    i = np.array([t >= t0])[0]
-    meanu = np.mean(u[:,i], axis=1)
-    plt.figure()
-    plt.plot(y_R, meanu)
-    plt.xlabel(r"$y/R$")
-    plt.ylabel(r"$U$")
-    plt.tight_layout()
-    if show:
-        plt.show()
         
 def set_funky_plane(x=1.0):
     foampy.dictionaries.replace_value("system/funkyDoCalcDict", "basePoint", 
@@ -387,73 +303,4 @@ def run_funky_batch():
     df.index.name = "x"
     print(df)
     df.to_csv("processed/mom_transport.csv", index_label="x")
-
-def make_momentum_trans_bargraph(print_analysis=True):
-    data = read_funky_log()
-    y_adv = data["y_adv"]
-    z_adv = data["z_adv"]
-    turb_trans = data["turb_trans"]
-    visc_trans = data["visc_trans"]
-    pressure_trans = data["pressure_trans"]
-    plt.figure(figsize=(6,4))
-    ax = plt.gca()
-    ax.bar(range(5), [y_adv, z_adv, turb_trans, visc_trans, pressure_trans], 
-           color="gray", edgecolor="black", hatch="//", width=0.5)
-    ax.set_xticks(np.arange(5)+0.25)
-    ax.set_xticklabels(["$y$-adv.", "$z$-adv.",
-                        "Turb.", "Visc.", "Press."])
-    plt.ylabel(r"$\frac{U \, \mathrm{ transport}}{UDU_\infty}$")
-    plt.tight_layout()
-    if print_analysis:
-        sum = y_adv + z_adv + turb_trans + visc_trans + pressure_trans
-        print("Momentum recovery = {:.3f}% per turbine diameter".format(sum))
-    plt.show()
-
-def plot_mom_transport(show=True):
-    df = pd.read_csv("processed/mom_transport.csv")
-    print(df)
-    plt.plot(df.x, df.y_adv, "-o", label=r"$-V \partial U / \partial y$")
-    plt.plot(df.x, df.z_adv, "-s", label=r"$-W \partial U / \partial z$")
-    plt.plot(df.x, df.turb_trans, "-^", label=r"$\nu_t \nabla^2 U$")
-    plt.plot(df.x, df.visc_trans, "->", label=r"$\nu \nabla^2 U$")
-    plt.plot(df.x, df.pressure_trans/10, "-<", label=r"$-\partial P / \partial x$ ($\times 10^{-1}$)")
-    plt.legend(loc=4)
-    plt.xlabel("$x/D$")
-    plt.ylabel(r"$\frac{U \, \mathrm{ transport}}{UU_\infty D^{-1}}$")
-    plt.grid()
-    plt.tight_layout()
-    if show:
-        plt.show()
-
-def plot_U_streamwise(show=True):
-    times = os.listdir("postProcessing/sets")
-    times.sort()
-    latest = times[-1]
-    filepath = os.path.join("postProcessing", "sets", latest, 
-                            "streamwise_U.xy")
-    x, u, v, w = np.loadtxt(filepath, unpack=True)
-    plt.plot(x, u, "k")
-    plt.xlabel("$x/D$")
-    plt.ylabel(r"$U/U_\infty$")
-    plt.grid()
-    plt.tight_layout()
-    if show:
-        plt.show()
-
-def plot_streamwise(save=False, savepath=""):
-    plt.figure(figsize=(12,5))
-    plt.subplot(121)
-    plot_U_streamwise(show=False)
-    plt.subplot(122)
-    plot_mom_transport(show=False)
-    if save:
-        plt.savefig(os.path.join(savepath, "AD_streamwise.pdf"))
-    plt.show()
-
-if __name__ == "__main__":
-    styleplot.set_sns()
-#    plot_grid_dep("nx", show=False)
-    plot_grid_dep("stepsPerRev", show=True)
-#    calc_blade_vel()
-#    plot_meanu()
 

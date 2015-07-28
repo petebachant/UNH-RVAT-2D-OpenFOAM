@@ -6,7 +6,7 @@ This script runs multiple simulations to check sensitivity to parameters.
 from subprocess import call
 import foampy
 import os
-import processing
+from modules import processing
 import pandas as pd
 
 def set_blockmesh_resolution(nx):
