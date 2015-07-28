@@ -127,10 +127,10 @@ def make_momentum_trans_bargraph(print_analysis=True):
     turb_trans = data["turb_trans"]
     visc_trans = data["visc_trans"]
     pressure_trans = data["pressure_trans"]
-    plt.figure(figsize=(6,4))
+    plt.figure(figsize=(7.5, 4))
     ax = plt.gca()
     ax.bar(range(5), [y_adv, z_adv, turb_trans, visc_trans, pressure_trans], 
-           color="gray", edgecolor="black", hatch="//", width=0.5)
+           color="gray", edgecolor="black", width=0.5)
     ax.set_xticks(np.arange(5)+0.25)
     ax.set_xticklabels(["$y$-adv.", "$z$-adv.",
                         "Turb.", "Visc.", "Press."])
