@@ -70,7 +70,7 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
     if show:
         plt.show()
 
-def plot_u(save=False, savedir="./figures", savetype=".pdf"):
+def plot_u(newfig=True, save=False, savedir="figures", savetype=".pdf"):
     """Plot mean streamwise velocity profile."""
     timedirs = os.listdir("postProcessing/sets")
     latest_time = max(timedirs)
@@ -78,7 +78,8 @@ def plot_u(save=False, savedir="./figures", savetype=".pdf"):
                       "profile_UMean.xy"), unpack=True)
     u = data[1]
     y_R = data[0]/R
-    plt.figure()
+    if newfig:
+        plt.figure()
     plt.plot(y_R, u, "k", label="SA (2-D)")
     plt.xlabel(r"$y/R$")
     plt.ylabel(r"$U$")
@@ -89,12 +90,35 @@ def plot_u(save=False, savedir="./figures", savetype=".pdf"):
             os.makedirs(savedir)
         plt.savefig(os.path.join(savedir, "u_profile_SA" + savetype))
 
-def plot_k(save=False):
-    """
-    Plot turbulence kinetic energy profile--not applicable for
-    Spalart--Allmaras turbulence model."""
-    print("Turbulence kinetic energy is zero for Spalart--Allmaras turbulence"
-          " model")
+def plot_k(amount="total", newfig=True, save=False):
+    """Plot turbulence kinetic energy profile."""
+    timedirs = os.listdir("postProcessing/sets")
+    latest_time = max(timedirs)
+    if amount == "total" or amount == "resolved":
+        data = np.loadtxt(os.path.join("postProcessing", "sets", latest_time,
+                          "profile_UPrime2Mean.xy"), unpack=True)
+        k = 0.5*(data[1] + data[4] + data[6])
+    if amount == "modeled" or amount == "total":
+        data = np.loadtxt(os.path.join("postProcessing", "sets", latest_time,
+                          "profile_kMean.xy"), unpack=True)
+        kmod = data[1]
+        if amount == "modeled":
+            k = kmod
+        elif amount == "total":
+            k += kmod
+    y_R = data[0]/R
+    if newfig:
+        plt.figure()
+    plt.plot(y_R, k/U_infty**2, "k", label="SA (2-D)")
+    plt.xlabel(r"$y/R$")
+    plt.ylabel(r"$k/U_\infty^2$")
+    plt.grid(True)
+    plt.tight_layout()
+    if save:
+        if not os.path.isdir(savedir):
+            os.makedirs(savedir)
+        plt.savefig(os.path.join(savedir, "k_{}_profile_SA{}".format(
+                amount, savetype)))
           
 def make_momentum_trans_bargraph(print_analysis=True):
     data = read_funky_log()
