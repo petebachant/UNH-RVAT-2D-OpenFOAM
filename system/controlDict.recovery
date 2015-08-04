@@ -15,49 +15,78 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     pimpleDyMFoam;
-
-startFrom       startTime;
-
-startTime       3.0;
-
-stopAt          endTime;
-
-endTime         6.0;
-
-deltaT          0.02;
-
-writeControl    timeStep;
-
-writeInterval   1;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  10;
-
-writeCompression compressed;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  no;
-
-maxCo           25;
-
-libs
-(
-    "libOpenFOAM.so"
-);
+#include "controlDict"
+#inputMode overwrite
 
 functions
 {
-    #include "readFields"
-    #include "recoveryTerms"
+    readFields
+    {
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        type            readFields;
+        fields          (pMean UMean kMean);
+    }
+
+    recoveryTerms
+    {
+        functionObjectLibs ("libutilityFunctionObjects.so");
+        type coded;
+        // Name of on-the-fly generated functionObject
+        redirectType writeRecoveryTerms;
+        code
+        #{
+            const volVectorField& UMean
+                = mesh().lookupObject<volVectorField>("UMean");
+            const volScalarField UMeanX = UMean.component(0);
+            const volScalarField& pMean
+                = mesh().lookupObject<volScalarField>("pMean");
+            
+            volVectorField gradPMean = fvc::grad(pMean);
+            
+            volScalarField gradPMeanX
+            (
+                IOobject
+                (
+                    "gradPMeanX",
+                    mesh().time().timeName(),
+                    mesh(),
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                gradPMean.component(0)
+            );
+            
+            volVectorField gradUMeanX
+            (
+                IOobject
+                (
+                    "gradUMeanX",
+                    mesh().time().timeName(),
+                    mesh(),
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                fvc::grad(UMeanX)
+            );
+
+            volScalarField laplacianUMeanX
+            (
+                IOobject
+                (
+                    "laplacianUMeanX",
+                    mesh().time().timeName(),
+                    mesh(),
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                fvc::laplacian(UMeanX)
+            );
+
+            gradPMeanX.write();
+            gradUMeanX.write();
+            laplacianUMeanX.write();
+        #};
+    }
 }
 
 // ************************************************************************* //
