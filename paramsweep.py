@@ -113,7 +113,18 @@ def tsr_dep(newfile=True):
         processing.log_perf("tsr_dep.csv", verbose=False)
                             
 if __name__ == "__main__":
-    spatial_grid_dep(newfile=True)
-#    timestep_dep(newfile=True)
-#    tsr_dep(newfile=False)
+    import argparse
+    parser = argparse.ArgumentParser(description="Run parameter variations")
+    parser.add_argument("variable", help="Which parameter to vary",
+                        choices=["space", "time", "tsr"])
+    parser.add_argument("--append", "-a", action="store_true", default=False,
+                        help="Append to existing CSV log file")
+    args = parser.parse_args()
+    
+    if args.variable == "space":
+        spatial_grid_dep(newfile=not args.append)
+    elif args.variable == "time":
+        timestep_dep(newfile=not args.append)
+    elif args.variable == "tsr":
+        tsr_dep(newfile=not args.append)
     
