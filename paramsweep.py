@@ -24,12 +24,12 @@ def set_blockmesh_resolution(nx):
 (
     ( 2.16 -1.83 -{z}) // 0
     ( 2.16  1.83 -{z}) // 1
-    (-1.52  1.83 -{z}) // 2
-    (-1.52 -1.83 -{z}) // 3
+    (-1.50  1.83 -{z}) // 2
+    (-1.50 -1.83 -{z}) // 3
     ( 2.16 -1.83  {z}) // 4
     ( 2.16  1.83  {z}) // 5
-    (-1.52  1.83  {z}) // 6
-    (-1.52 -1.83  {z}) // 7 
+    (-1.50  1.83  {z}) // 6
+    (-1.50 -1.83  {z}) // 7 
 );
 """.format(z=zres)
     foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict", 
