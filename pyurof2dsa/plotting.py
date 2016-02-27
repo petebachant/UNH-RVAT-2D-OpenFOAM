@@ -8,6 +8,7 @@ from .processing import *
 def plot_perf():
     calc_perf(plot=True)
 
+
 def plot_grid_dep(var="nx", show=True):
     if var=="maxCo":
         df = pd.read_csv("processed/maxco_dep.csv")
@@ -47,8 +48,9 @@ def plot_grid_dep(var="nx", show=True):
     if show:
         plt.show()
 
+
 def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
-    """Plots the performance curve read from processed/tsr_dep.csv."""
+    """Plot performance curve read from processed/tsr_dep.csv."""
     df = pd.read_csv("processed/tsr_dep.csv")
     plt.figure(figsize=(8,3))
     plt.subplot(1, 2, 1)
@@ -68,6 +70,7 @@ def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
     if show:
         plt.show()
 
+
 def plot_u(newfig=True, save=False, savedir="figures", savetype=".pdf"):
     """Plot mean streamwise velocity profile."""
     df = load_u_profile()
@@ -82,6 +85,7 @@ def plot_u(newfig=True, save=False, savedir="figures", savetype=".pdf"):
         if not os.path.isdir(savedir):
             os.makedirs(savedir)
         plt.savefig(os.path.join(savedir, "u_profile_SA" + savetype))
+
 
 def plot_k(amount="total", newfig=True, save=False):
     """Plot turbulence kinetic energy profile."""
@@ -99,6 +103,7 @@ def plot_k(amount="total", newfig=True, save=False):
             os.makedirs(savedir)
         plt.savefig(os.path.join(savedir, "k_{}_profile_SA{}".format(
                 amount, savetype)))
+
 
 def make_momentum_trans_bargraph(print_analysis=True):
     data = read_funky_log()
@@ -121,6 +126,7 @@ def make_momentum_trans_bargraph(print_analysis=True):
         print("Momentum recovery = {:.3f}% per turbine diameter".format(sum))
     plt.show()
 
+
 def plot_mom_transport(show=True):
     df = pd.read_csv("processed/mom_transport.csv")
     print(df)
@@ -128,7 +134,8 @@ def plot_mom_transport(show=True):
     plt.plot(df.x, df.z_adv, "-s", label=r"$-W \partial U / \partial z$")
     plt.plot(df.x, df.turb_trans, "-^", label=r"$\nu_t \nabla^2 U$")
     plt.plot(df.x, df.visc_trans, "->", label=r"$\nu \nabla^2 U$")
-    plt.plot(df.x, df.pressure_trans/10, "-<", label=r"$-\partial P / \partial x$ ($\times 10^{-1}$)")
+    plt.plot(df.x, df.pressure_trans/10, "-<",
+             label=r"$-\partial P / \partial x$ ($\times 10^{-1}$)")
     plt.legend(loc=4)
     plt.xlabel("$x/D$")
     plt.ylabel(r"$\frac{U \, \mathrm{ transport}}{UU_\infty D^{-1}}$")
@@ -136,6 +143,7 @@ def plot_mom_transport(show=True):
     plt.tight_layout()
     if show:
         plt.show()
+
 
 def plot_U_streamwise(show=True):
     times = os.listdir("postProcessing/sets")
@@ -151,6 +159,7 @@ def plot_U_streamwise(show=True):
     plt.tight_layout()
     if show:
         plt.show()
+
 
 def plot_streamwise(save=False, savepath=""):
     plt.figure(figsize=(12,5))

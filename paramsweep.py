@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-"""This script runs multiple simulations to check sensitivity to parameters.
-"""
+"""This script runs multiple simulations to check sensitivity to parameters."""
 
 from subprocess import call
 import foampy

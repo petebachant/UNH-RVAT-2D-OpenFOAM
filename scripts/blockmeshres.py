@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
-This script replaces a value in the blockMeshDict
-"""
+"""This script replaces a value in the blockMeshDict."""
 
 import foampy
 import sys
@@ -11,9 +8,9 @@ if len(sys.argv) > 1:
     newres = sys.argv[1]
 else:
     newres = 110
-    
+
 resline = "({res} {res} 1)".format(res=newres)
-    
+
 blocks = """blocks
 (
     hex (0 1 2 3 4 5 6 7)
@@ -33,12 +30,12 @@ vertices = """vertices
     ( 2.16 -1.83  {z}) // 4
     ( 2.16  1.83  {z}) // 5
     (-1.50  1.83  {z}) // 6
-    (-1.50 -1.83  {z}) // 7 
+    (-1.50 -1.83  {z}) // 7
 );
 """.format(z=zres)
 
-foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict", 
+foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict",
                                   "blocks", blocks)
-                                  
-foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict", 
+
+foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict",
                                   "vertices", vertices)
