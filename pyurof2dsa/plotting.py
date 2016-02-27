@@ -1,15 +1,13 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
-Plotting functions for the UNH-RVAT-2D OpenFOAM case.
-"""
+"""Plotting functions for the UNH-RVAT-2D OpenFOAM case."""
+
 from __future__ import division, print_function
-from modules.processing import *
+from .processing import *
 
 
 def plot_perf():
     calc_perf(plot=True)
-                        
+
 def plot_grid_dep(var="nx", show=True):
     if var=="maxCo":
         df = pd.read_csv("processed/maxco_dep.csv")
@@ -48,7 +46,7 @@ def plot_grid_dep(var="nx", show=True):
     plt.tight_layout()
     if show:
         plt.show()
-        
+
 def plot_perf_curve(show=True, save=False, savepath="./", savetype=".pdf"):
     """Plots the performance curve read from processed/tsr_dep.csv."""
     df = pd.read_csv("processed/tsr_dep.csv")
@@ -101,7 +99,7 @@ def plot_k(amount="total", newfig=True, save=False):
             os.makedirs(savedir)
         plt.savefig(os.path.join(savedir, "k_{}_profile_SA{}".format(
                 amount, savetype)))
-          
+
 def make_momentum_trans_bargraph(print_analysis=True):
     data = read_funky_log()
     y_adv = data["y_adv"]
@@ -111,7 +109,7 @@ def make_momentum_trans_bargraph(print_analysis=True):
     pressure_trans = data["pressure_trans"]
     plt.figure(figsize=(7.5, 4))
     ax = plt.gca()
-    ax.bar(range(5), [y_adv, z_adv, turb_trans, visc_trans, pressure_trans], 
+    ax.bar(range(5), [y_adv, z_adv, turb_trans, visc_trans, pressure_trans],
            color="gray", edgecolor="black", width=0.5)
     ax.set_xticks(np.arange(5)+0.25)
     ax.set_xticklabels(["$y$-adv.", "$z$-adv.",
@@ -143,7 +141,7 @@ def plot_U_streamwise(show=True):
     times = os.listdir("postProcessing/sets")
     times.sort()
     latest = times[-1]
-    filepath = os.path.join("postProcessing", "sets", latest, 
+    filepath = os.path.join("postProcessing", "sets", latest,
                             "streamwise_U.xy")
     x, u, v, w = np.loadtxt(filepath, unpack=True)
     plt.plot(x, u, "k")
