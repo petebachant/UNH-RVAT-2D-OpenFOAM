@@ -6,7 +6,7 @@ This script runs multiple simulations to check sensitivity to parameters.
 from subprocess import call
 import foampy
 import os
-from modules import processing
+from pyurof2dsst import processing
 import pandas as pd
 
 def set_blockmesh_resolution(nx):
@@ -29,18 +29,18 @@ def set_blockmesh_resolution(nx):
     ( 2.16 -1.83  {z}) // 4
     ( 2.16  1.83  {z}) // 5
     (-1.50  1.83  {z}) // 6
-    (-1.50 -1.83  {z}) // 7 
+    (-1.50 -1.83  {z}) // 7
 );
 """.format(z=zres)
-    foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict", 
+    foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict",
                                       "blocks", blocks)
-    foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict", 
+    foampy.dictionaries.replace_value("constant/polyMesh/blockMeshDict",
                                       "vertices", vertices)
-                                      
+
 def set_timestep(dt):
     dt = str(dt)
     foampy.dictionaries.replace_value("system/controlDict", "deltaT", dt)
-    
+
 def set_maxco(maxco):
     maxco = str(maxco)
     foampy.dictionaries.replace_value("system/controlDict", "maxCo", maxco)
@@ -58,7 +58,7 @@ def spatial_grid_dep(newfile=True):
         set_blockmesh_resolution(nx)
         call("./Allrun")
         processing.log_perf("spatial_grid_dep.csv", verbose=False)
-        
+
 def timestep_dep(newfile=True):
     if newfile:
         try:
@@ -73,7 +73,7 @@ def timestep_dep(newfile=True):
         set_timestep(dt)
         call("./Allrun.postmesh")
         processing.log_perf("timestep_dep.csv", verbose=False)
-        
+
 def maxco_dep(newfile=True):
     if newfile:
         try:
@@ -104,8 +104,7 @@ def tsr_dep(newfile=True):
         print("Setting tip speed ratio to {}".format(tsr))
         call("./Allrun.postmesh {}".format(tsr), shell=True)
         processing.log_perf("tsr_dep.csv", verbose=False)
-                            
+
 if __name__ == "__main__":
 #    timestep_dep(newfile=True)
     tsr_dep(newfile=False)
-

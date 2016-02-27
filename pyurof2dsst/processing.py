@@ -1,12 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
-Processing functions for the UNH-RVAT-2D OpenFOAM case.
+"""Processing functions for the UNH-RVAT-2D OpenFOAM case."""
 
-"""
 from __future__ import division, print_function
 import matplotlib.pyplot as plt
-import numpy as np 
+import numpy as np
 import foampy
 import os
 import pandas as pd
@@ -28,7 +24,7 @@ def get_ncells(logname="log.checkMesh", keyword="cells"):
             if ls and ls[0] == keyword:
                 value = ls[1]
                 return int(value)
-                
+
 def get_yplus(logname="log.yPlus"):
     with open(logname) as f:
         lines = f.readlines()
@@ -41,33 +37,33 @@ def get_yplus(logname="log.yPlus"):
     return {"min" : float(line[3]),
             "max" : float(line[5]),
             "mean" : float(line[7])}
-            
+
 def get_nx():
-    blocks = foampy.dictionaries.read_text("constant/polyMesh/blockMeshDict", 
+    blocks = foampy.dictionaries.read_text("constant/polyMesh/blockMeshDict",
                                            "blocks")
     nx = int(blocks[3].replace("(", "").split()[0])
     return nx
-    
+
 def get_ddt_scheme():
-    block = foampy.dictionaries.read_text("system/fvSchemes", 
+    block = foampy.dictionaries.read_text("system/fvSchemes",
                                           "ddtSchemes")
     val = block[2].replace(";", "").split()[1]
     return val
-    
+
 def get_max_courant_no():
-    if foampy.dictionaries.read_single_line_value("controlDict", 
+    if foampy.dictionaries.read_single_line_value("controlDict",
                                                   "adjustTimeStep",
                                                   valtype=str) == "yes":
-        return foampy.dictionaries.read_single_line_value("controlDict", 
+        return foampy.dictionaries.read_single_line_value("controlDict",
                                                           "maxCo")
     else:
         return "nan"
-        
+
 def get_deltat():
-    if foampy.dictionaries.read_single_line_value("controlDict", 
+    if foampy.dictionaries.read_single_line_value("controlDict",
                                                   "adjustTimeStep",
                                                   valtype=str) == "no":
-        return foampy.dictionaries.read_single_line_value("controlDict", 
+        return foampy.dictionaries.read_single_line_value("controlDict",
                                                           "deltaT")
     else:
         return "nan"
@@ -101,7 +97,7 @@ def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
     cd = drag/(0.5*rho*area*U_infty**2)
     meancd = np.mean(cd[theta >= theta_0])
     if verbose:
-        print("Performance from {:.1f}--{:.1f} degrees:".format(theta_0, 
+        print("Performance from {:.1f}--{:.1f} degrees:".format(theta_0,
                                                                 theta.max()))
         print("Mean TSR = {:.3f}".format(meantsr))
         print("Mean C_P = {:.3f}".format(meancp))
@@ -113,14 +109,14 @@ def calc_perf(theta_0=360, plot=False, verbose=True, inertial=False):
         plt.ylabel(r"$C_P$")
         plt.tight_layout()
     if reached_theta_0:
-        return {"C_P" : meancp, 
-                "C_D" : meancd, 
+        return {"C_P" : meancp,
+                "C_D" : meancd,
                 "TSR" : meantsr}
     else:
-        return {"C_P" : "nan", 
-                "C_D" : "nan", 
+        return {"C_P" : "nan",
+                "C_D" : "nan",
                 "TSR" : "nan"}
-                
+
 def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
     """Imports text data created with the OpenFOAM sample utility"""
     if casedir != "":
@@ -130,9 +126,9 @@ def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
     t = []
     times = os.listdir(folder)
     for time1 in times:
-        try: 
+        try:
             float(time1)
-        except ValueError: 
+        except ValueError:
             times.remove(time1)
         try:
             t.append(int(time1))
@@ -156,7 +152,7 @@ def load_set(casedir="", name="profile", quantity="U", fmt="xy", axis="xyz"):
                     data[ts]["y"] = d[:,1]
                     data[ts]["z"] = d[:,2]
     return data
-    
+
 def calc_blade_vel():
     """Calculates blade angle of attack and relative velocity time series."""
     # Load sampled data
@@ -230,7 +226,7 @@ def calc_blade_vel():
     plt.ylabel("Relative velocity (m/s)")
     plt.tight_layout()
     plt.show()
-        
+
 def log_perf(logname="all_perf.csv", mode="a", verbose=True):
     """Logs mean performance calculations to CSV file. If file exists, data
     is appended."""
@@ -260,7 +256,7 @@ def log_perf(logname="all_perf.csv", mode="a", verbose=True):
                         ypmax=yplus["max"],
                         ypmean=yplus["mean"],
                         ddt_scheme=ddt_scheme))
-                        
+
 def load_u_profile():
     """
     Loads data from the sampled mean velocity and returns it as a pandas
@@ -274,7 +270,7 @@ def load_u_profile():
     df["y_R"] = data[0]/R
     df["u"] = data[1]
     return df
-    
+
 def load_k_profile():
     """
     Loads data from the sampled `UPrime2Mean` and `kMean` (if available) and
@@ -296,9 +292,9 @@ def load_k_profile():
         df["k_modeled"] = np.zeros(len(df.y_R))*np.nan
         df["k_total"] = df.k_resolved
     return df
-        
+
 def set_funky_plane(x=1.0):
-    foampy.dictionaries.replace_value("system/funkyDoCalcDict", "basePoint", 
+    foampy.dictionaries.replace_value("system/funkyDoCalcDict", "basePoint",
                                       "({}".format(x))
 
 def read_funky_log():
@@ -323,7 +319,7 @@ def read_funky_log():
             "visc_trans" : visc_trans, "pressure_trans" : pressure_trans}
 
 def run_funky_batch():
-    xlist = [-1.99, -1.5, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 
+    xlist = [-1.99, -1.5, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75,
              1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 7.99]
     df = pd.DataFrame()
     for x in xlist:
@@ -337,4 +333,3 @@ def run_funky_batch():
     df.index.name = "x"
     print(df)
     df.to_csv("processed/mom_transport.csv", index_label="x")
-
