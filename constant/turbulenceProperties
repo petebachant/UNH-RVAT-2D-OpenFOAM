@@ -15,7 +15,12 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-simulationType  RASModel;
+simulationType  RAS;
+
+RAS
+{
+    #include "RASProperties"
+}
 
 
 // ************************************************************************* //
