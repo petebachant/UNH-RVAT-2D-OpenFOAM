@@ -1,7 +1,7 @@
 UNH-RVAT 2D OpenFOAM case
 =========================
 
-OpenFOAM (2.3.x) case files for a 2D RANS simulation of the UNH-RVAT cross-flow
+OpenFOAM (3.0.1) case files for a 2D RANS simulation of the UNH-RVAT cross-flow
 turbine in a towing tank. The simulation uses the `pimpleDyMFoam` solver and the
 `kOmegaSST` turbulence model.
 
