@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.3.x                                 |
+|  \\    /   O peration     | Version:  3.0.1                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ divSchemes
     div(phi,U)      Gauss linearUpwind grad(U); // Was Gauss linearUpwind grad(U)
     div(phi,k)      Gauss upwind; // Was Gauss limitedLinear 1
     div(phi,omega)  Gauss upwind; // Was Gauss limitedLinear 1
-    div((nuEff*dev(T(grad(U))))) Gauss linear;
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
 }
 
 laplacianSchemes
@@ -55,6 +55,12 @@ fluxRequired
     default         no;
     pcorr           ;
     p               ;
+}
+
+wallDist
+{
+    method meshWave;
+    nRequired false;
 }
 
 // ************************************************************************* //
