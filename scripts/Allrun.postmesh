@@ -12,7 +12,7 @@ cp -rf 0.org 0
 
 python scripts/gendynmeshdict.py $1
 
-pimpleDyMFoam | tee log.pimpleDyMFoam
+runApplication pimpleDyMFoam
 
 runApplication vorticity
 # mv log.yPlus log.yPlus.0
